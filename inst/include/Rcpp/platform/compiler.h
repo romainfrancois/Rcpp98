@@ -43,21 +43,6 @@
 # error "This compiler is not supported"
 #endif
         
-#ifdef __GNUC__
-    #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
-    // g++ 4.5 does not seem to like some of the fast indexing
-    #if GCC_VERSION >= 40500
-        #define IS_GCC_450_OR_LATER
-    #endif
-    // g++ 4.6 switches from exception_defines.h to bits/exception_defines.h
-    #if GCC_VERSION < 40600
-        #define IS_EARLIER_THAN_GCC_460
-    #endif
-    #if GCC_VERSION >= 40600
-        #define IS_GCC_460_OR_LATER
-    #endif
-#endif
-
 // Check C++0x features
 #if defined(__INTEL_COMPILER)
     #if __cplusplus >= 201103L
