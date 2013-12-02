@@ -46,7 +46,7 @@ test.environment.get <- function(){
 
 	checkEquals( runit_get( e, "a" ), e$a, msg = "Environment::get()" )
 	checkEquals( runit_get( e, "foobar" ), NULL, msg = "Environment::get()" )
-	checkEquals( runit_get( asNamespace("Rcpp98"), "CxxFlags"), Rcpp98:::CxxFlags,
+	checkEquals( runit_get( asNamespace("Rcpp98"), "sourceCpp"), Rcpp98:::sourceCpp,
 		msg = "Environment(namespace)::get() " )
 
 }
@@ -58,17 +58,17 @@ test.environment.exists <- function(){
 
 	checkTrue( runit_exists( e, "a" ), msg = "Environment::get()" )
 	checkTrue( !runit_exists( e, "foobar" ), msg = "Environment::get()" )
-	checkTrue( runit_exists( asNamespace("Rcpp98"), "CxxFlags"),
+	checkTrue( runit_exists( asNamespace("Rcpp98"), "sourceCpp"),
 		msg = "Environment(namespace)::get() " )
 }
 
 test.environment.assign <- function(){
 	e <- new.env( )
 	checkTrue( runit_assign(e, "a", 1:10 ), msg = "Environment::assign" )
-	checkTrue( runit_assign(e, "b", Rcpp98:::CxxFlags ), msg = "Environment::assign" )
+	checkTrue( runit_assign(e, "b", Rcpp98:::sourceCpp ), msg = "Environment::assign" )
 	checkEquals( ls(e), c("a", "b"), msg = "Environment::assign, checking names" )
 	checkEquals( e$a, 1:10, msg = "Environment::assign, checking value 1" )
-	checkEquals( e$b, Rcpp98:::CxxFlags, msg = "Environment::assign, checking value 2" )
+	checkEquals( e$b, Rcpp98:::sourceCpp, msg = "Environment::assign, checking value 2" )
 
 	lockBinding( "a", e )
 	can.demangle <- Rcpp98:::capabilities()[["demangling"]]
