@@ -40,24 +40,6 @@
 #include <R_ext/Rdynload.h>
 #include <Rversion.h>
 
-/**
- * \brief Rcpp API
- */
-namespace Rcpp{
-
-    /**
-     * \brief traits used to dispatch wrap
-     */
-    namespace traits{
-    } // traits
-
-    /**
-     * \brief internal implementation details
-     */
-    namespace internal{     
-    } // internal 
-} // Rcpp
-
 #include <iterator>
 #include <exception>
 #include <iostream>
