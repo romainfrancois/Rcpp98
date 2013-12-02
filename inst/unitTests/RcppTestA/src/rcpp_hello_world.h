@@ -3,7 +3,9 @@
 
 #include <Rcpp.h>
 
-RcppExport SEXP rcpp_hello_world() ;
-RcppExport SEXP hello_world_ex() ;
+extern "C" {
+    SEXP rcpp_hello_world() ;
+    SEXP hello_world_ex() ;
+}
 
 #endif

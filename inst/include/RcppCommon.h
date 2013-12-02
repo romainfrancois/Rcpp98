@@ -117,8 +117,6 @@ namespace Rcpp{
 #include <Rcpp/complex.h>
 #include <Rcpp/barrier.h>
 
-#define RcppExport extern "C"
-
 #include <Rcpp/exceptions.h>
 
 namespace Rcpp{

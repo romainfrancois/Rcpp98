@@ -2673,7 +2673,7 @@ namespace {
 
 // Create temporary build directory, generate code as necessary, and return
 // the context required for the sourceCpp function to complete it's work
-RcppExport SEXP sourceCppContext(SEXP sFile, SEXP sCode, 
+extern "C" SEXP sourceCppContext(SEXP sFile, SEXP sCode, 
                                  SEXP sRebuild, SEXP sPlatform) {
 BEGIN_RCPP
     // parameters
@@ -2734,7 +2734,7 @@ END_RCPP
 
 // Compile the attributes within the specified package directory into 
 // RcppExports.cpp and RcppExports.R
-RcppExport SEXP compileAttributes(SEXP sPackageDir, 
+extern "C" SEXP compileAttributes(SEXP sPackageDir, 
                                   SEXP sPackageName,
                                   SEXP sDepends,
                                   SEXP sCppFiles,
