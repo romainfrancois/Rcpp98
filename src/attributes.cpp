@@ -1524,7 +1524,7 @@ namespace attributes {
             ostr() << std::endl;
             ostr() << "// registerCCallable (register entry points for "
                       "exported C++ functions)" << std::endl;
-            ostr() << "RcppExport SEXP " << registerCCallableExportedName()
+            ostr() << "extern \"C\" SEXP " << registerCCallableExportedName()
                    << "() { " << std::endl;
             for (std::size_t i=0;i<cppExports_.size(); i++) {
                 const Attribute& attr = cppExports_[i];
@@ -2143,7 +2143,7 @@ namespace attributes {
             // write the C++ callable SEXP-based function (this version
             // returns errors via "try-error")
             ostr << std::endl;
-            ostr << (cppInterface ? "static" : "RcppExport"); 
+            ostr << (cppInterface ? "static" : "extern \"C\" "); 
             ostr << " SEXP ";
             std::string funcName = contextId + "_" + function.name();
             ostr << funcName;
@@ -2207,7 +2207,7 @@ namespace attributes {
             
             // Now write an R wrapper that returns error via Rf_error
             if (cppInterface) {
-                ostr << "RcppExport SEXP " << funcName << "(" << args << ") {"
+                ostr << "extern \"C\" SEXP " << funcName << "(" << args << ") {"
                      << std::endl;
                 ostr << "    SEXP __result;" << std::endl;
                 ostr << "    {" << std::endl;
