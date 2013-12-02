@@ -10,7 +10,7 @@ motivation for it.
    This gives me latitude to make important disruptive changes rapidly, 
    whereas in `Rcpp` even if manage to negociate such changes, I sometimes have to wait
    for a year and go through a long deprecation period, ... Life is too short for that
- - Emphasis on C++98. This is the only standard that `CRAN` supports. So `Rcpp98`
+ - Emphasis on C++98. `Rcpp98`
    does not contain code that attempts to use C++11 or later. If you are 
    interested in C++11, my recommendation would be to use `Rcpp11`, my 
    `Rcpp` implementation focused on C++11 features. 
