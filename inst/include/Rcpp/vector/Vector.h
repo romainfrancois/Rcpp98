@@ -127,12 +127,6 @@ public:
     template <typename InputIterator, typename Func>
     Vector( InputIterator first, InputIterator last, Func func, int n) ;
 
-#ifdef HAS_CXX0X_INITIALIZER_LIST
-    Vector( std::initializer_list<init_type> list ) {
-        assign( list.begin() , list.end() ) ;
-    }
-#endif
-	
     template <typename T> Vector& operator=( const T& x) ;
 	
     static inline stored_type get_na() { 

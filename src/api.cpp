@@ -167,17 +167,6 @@ SEXP rcpp_capabilities(){
         ) ;
 }
 
-
-// [[Rcpp::internal]]
-SEXP rcpp_can_use_cxx0x(){ 
-    #ifdef HAS_VARIADIC_TEMPLATES
-        return Rf_ScalarLogical( TRUE );
-    #else
-        return Rf_ScalarLogical( FALSE );
-    #endif
-}
-    
-
 // [[Rcpp::register]]
 SEXP stack_trace( const char* file, int line ){
     #if defined(__GNUC__)

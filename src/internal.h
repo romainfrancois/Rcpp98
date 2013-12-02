@@ -119,7 +119,6 @@ CALLFUN_3(CppField__get);
 CALLFUN_4(CppField__set);
 
 CALLFUN_0(rcpp_capabilities) ;
-CALLFUN_0(rcpp_can_use_cxx0x) ;
 
 /* .External functions */
 EXTFUN(CppMethod__invoke) ;

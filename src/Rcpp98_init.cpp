@@ -55,7 +55,6 @@ static R_CallMethodDef callEntries[]  = {
     CALLDEF(CppField__set,4),
     
     CALLDEF(rcpp_capabilities,0),
-    CALLDEF(rcpp_can_use_cxx0x,0),
     {NULL, NULL, 0}
 }; 
 
