@@ -159,6 +159,5 @@ namespace Rcpp{
 #include <Rcpp/sugar/sugar_forward.h>
 
 #include <Rcpp/iostream/Rstreambuf.h>
-#include <Rcpp/longlong.h>
 
 #endif
