@@ -23,10 +23,6 @@
 #ifndef Rcpp98_hpp
 #define Rcpp98_hpp
                   
-#if defined(Rcpp_hpp)
-    #error "Rcpp98 is not compatible with Rcpp"
-#endif
-
 /* it is important that this comes first */
 #include <RcppCommon.h>
                  
