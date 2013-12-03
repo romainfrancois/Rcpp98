@@ -155,7 +155,7 @@ SEXP as_character_externalptr(SEXP xp){
     
 // [[Rcpp::internal]]
 SEXP rcpp_capabilities(){
-    return CharacterVector::create( 
+    return LogicalVector::create( 
         _["variadic templates"] = false,
         _["initializer lists"]  = false,
         _["exception handling"] = true,
