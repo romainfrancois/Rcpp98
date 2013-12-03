@@ -12,6 +12,7 @@ Authors@R: c(
 Description: The Rcpp98 is an alternative implementation of the Rcpp API. 
 Depends: R (>= 3.0.0)
 Imports: methods
+Suggests: testthat
 URL: https://github.com/romainfrancois/Rcpp98
 License: GPL (>= 2)
 BugReports: https://github.com/romainfrancois/Rcpp98/issues

@@ -19,7 +19,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Rcpp98.  If not, see <http://www.gnu.org/licenses/>.
 
-#define COMPILING_RCPP
+#define COMPILING_RCPP98
 
 #define USE_RINTERNALS
 #include <Rinternals.h>

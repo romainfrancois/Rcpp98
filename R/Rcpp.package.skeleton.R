@@ -1,5 +1,3 @@
-# -*- tab-width: 4; -*-
-
 # Copyright (C) 2009 - 2013  Dirk Eddelbuettel and Romain Francois
 #
 # This file is part of Rcpp98.
