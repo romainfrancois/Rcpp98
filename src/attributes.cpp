@@ -36,7 +36,6 @@
 #include <fstream>
 #include <sstream>
 
-#define RCPP_NO_SUGAR
 #include <Rcpp.h>
 
 /*******************************************************************

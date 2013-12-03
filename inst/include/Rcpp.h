@@ -23,7 +23,6 @@
 #ifndef Rcpp98_hpp
 #define Rcpp98_hpp
                   
-/* it is important that this comes first */
 #include <RcppCommon.h>
                  
 #include <Rcpp/RObject.h>
@@ -54,6 +53,7 @@
 #include <Rcpp/StringTransformer.h>
 #include <Rcpp/Formula.h>
 #include <Rcpp/DataFrame.h>
+
 #include <Rcpp/Date.h>
 #include <Rcpp/DateVector.h>
 #include <Rcpp/Datetime.h>
@@ -64,12 +64,9 @@
 #include <Rcpp/Module.h>
 #include <Rcpp/InternalFunction.h>
 
-#ifndef RCPP_NO_SUGAR
 #include <Rcpp/sugar/sugar.h>
 #include <Rcpp/stats/stats.h>
-#endif
 
-// wrappers for R API 'scalar' functions
 #include <Rcpp/Rmath.h>
 
 // this stays at the very end, because it needs to 
