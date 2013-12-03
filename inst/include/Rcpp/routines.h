@@ -31,8 +31,7 @@ namespace Rcpp{
         char* get_string_buffer() ;
         SEXP get_Rcpp98_namespace() ; 
     }
-    double mktime00(struct tm &) ;
-    struct tm * gmtime_(const time_t * const) ;
+
 }
  
 SEXP rcpp_get_stack_trace() ;
@@ -94,20 +93,7 @@ namespace Rcpp {
         }
     
     }
-                  
-    
-    inline double mktime00(struct tm &tm){
-        typedef double (*Fun)(struct tm&) ;
-        static Fun fun = GET_CALLABLE("mktime00") ;
-        return fun(tm);
-    }
-    
-    inline struct tm * gmtime_(const time_t * const x){
-        typedef struct tm* (*Fun)(const time_t* const);
-        static Fun fun =  GET_CALLABLE("gmtime_") ;
-        return fun(x) ;
-    }                                             
-    
+   
 }     
    
 inline SEXP rcpp_get_stack_trace(){

@@ -109,8 +109,6 @@ void registerFunctions(){
     RCPP_REGISTER(setCurrentScope)
     RCPP_REGISTER(get_string_buffer)
     RCPP_REGISTER(short_file_name)
-    RCPP_REGISTER(mktime00)
-    RCPP_REGISTER(gmtime_)
     RCPP_REGISTER(reset_current_error)
     RCPP_REGISTER(error_occured)
     RCPP_REGISTER(rcpp_get_current_error)
