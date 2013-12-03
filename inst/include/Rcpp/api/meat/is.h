@@ -132,19 +132,6 @@ namespace internal{
         return Rf_inherits( x, "formula" ) ;
     }
     
-    template <> inline bool is__simple<Date>( SEXP x ){
-        return is_atomic(x) && TYPEOF(x) == REALSXP && Rf_inherits( x, "Date" ) ;
-    }
-    template <> inline bool is__simple<Datetime>( SEXP x ){
-        return is_atomic(x) && TYPEOF(x) == REALSXP && Rf_inherits( x, "POSIXt" ) ;
-    }
-    template <> inline bool is__simple<DateVector>( SEXP x ){
-        return TYPEOF(x) == REALSXP && Rf_inherits( x, "Date" ) ;
-    }
-    template <> inline bool is__simple<DatetimeVector>( SEXP x ){
-        return TYPEOF(x) == REALSXP && Rf_inherits( x, "POSIXt" ) ;
-    }
-     
     inline bool is_module_object_internal(SEXP obj, const char* clazz){
 	    Environment env(obj) ;
 	    XPtr<class_Base> xp( env.get(".cppclass") );

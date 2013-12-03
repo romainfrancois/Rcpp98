@@ -23,7 +23,7 @@
 #define Rcpp__platform__compiler_h
 
 #undef GOOD_COMPILER_FOR_RCPP
-#if defined(__GNUC__) || defined(__SUNPRO_CC) || defined(__clang__) || defined(__INTEL_COMPILER)
+#if defined(__GNUC__) || defined(__SUNPRO_CC) || defined(__clang__) || defined(__INTEL_COMPILER)
 #define GOOD_COMPILER_FOR_RCPP
 #endif
 

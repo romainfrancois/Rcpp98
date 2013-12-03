@@ -54,11 +54,6 @@
 #include <Rcpp/Formula.h>
 #include <Rcpp/DataFrame.h>
 
-#include <Rcpp/Date.h>
-#include <Rcpp/DateVector.h>
-#include <Rcpp/Datetime.h>
-#include <Rcpp/DatetimeVector.h>
-
 #include <Rcpp/Na_Proxy.h>
 
 #include <Rcpp/Module.h>

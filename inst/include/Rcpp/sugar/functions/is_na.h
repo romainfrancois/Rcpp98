@@ -88,13 +88,6 @@ inline sugar::IsNa<RTYPE,NA,T> is_na( const Rcpp::VectorBase<RTYPE,NA,T>& t){
 	return sugar::IsNa<RTYPE,NA,T>( t ) ;
 }
 
-inline sugar::IsNa_Vector_is_na<DatetimeVector> is_na( const DatetimeVector& x){
-    return sugar::IsNa_Vector_is_na<DatetimeVector>( x ) ;
-}
-inline sugar::IsNa_Vector_is_na<DateVector> is_na( const DateVector& x){
-    return sugar::IsNa_Vector_is_na<DateVector>( x ) ;
-}
-
 } // Rcpp
 #endif
 

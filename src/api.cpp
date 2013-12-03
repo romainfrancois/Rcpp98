@@ -159,10 +159,12 @@ SEXP rcpp_capabilities(){
         _["variadic templates"] = false,
         _["initializer lists"]  = false,
         _["exception handling"] = true,
-        _["tr1 unordered maps"] = defined(HAS_TR1_UNORDERED_MAP),
-        _["tr1 unordered sets"] = defined(HAS_TR1_UNORDERED_SET),
         _["Rcpp modules"]       = true,
-        _["demangling"]         = defined(RCPP_HAS_DEMANGLING),
+        #if defined(RCPP_HAS_DEMANGLING)
+        _["demangling"]         = true,
+        #else
+        _["demangling"]         = false,
+        #endif
         _["long long"]          = false 
         ) ;
 }
