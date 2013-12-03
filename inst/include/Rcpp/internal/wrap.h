@@ -907,7 +907,6 @@ inline SEXP module_wrap_dispatch( const T& obj, Rcpp::traits::void_wrap_tag ){
 	return R_NilValue ;
 }
 
-// these are defined in wrap_end.h
 template <typename T>
 inline SEXP module_wrap_dispatch( const T& obj, Rcpp::traits::pointer_wrap_tag ) ; 
 

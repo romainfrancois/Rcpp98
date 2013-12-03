@@ -23,44 +23,54 @@
 #define Rcpp_api_meat_wrap_h
 
 namespace Rcpp{ 
-namespace internal{
-        
-template <typename InputIterator, typename KEY, typename VALUE, int RTYPE>
-inline SEXP range_wrap_dispatch___impl__pair( InputIterator first, InputIterator last, Rcpp::traits::true_type ){
-	RCPP_DEBUG_3( "range_wrap_dispatch___impl__pair<KEY = %s, VALUE = %s, RTYPE = %d>\n", DEMANGLE(KEY), DEMANGLE(VALUE), RTYPE)
-    size_t size = std::distance( first, last ) ;
-	//typedef typename Rcpp::traits::storage_type<RTYPE>::type STORAGE ;
-	
-	CharacterVector names(size) ;
-	Vector<RTYPE> x(size) ;
-	Rcpp::String buffer ;
-	for( size_t i = 0; i < size ; i++, ++first){
-        buffer   = first->first ;
-        x[i]     = first->second ;
-        names[i] = buffer ;
-	}
-	x.attr( "names" ) = names ;
-	return x ;
-}
-                
-template <typename InputIterator, typename KEY, typename VALUE, int RTYPE>
-inline SEXP range_wrap_dispatch___impl__pair( InputIterator first, InputIterator last, Rcpp::traits::false_type ){
-	size_t size = std::distance( first, last ) ;
-	
-	Shield<SEXP> names( Rf_allocVector(STRSXP, size) ) ;
-	Shield<SEXP> x( Rf_allocVector(VECSXP, size) ) ;
-	Rcpp::String buffer ;
-	for( size_t i = 0; i < size ; i++, ++first){
-        buffer = first->first ;
-        SET_VECTOR_ELT( x, i, Rcpp::wrap(first->second) );
-        SET_STRING_ELT( names, i, buffer.get_sexp() ) ;
-	}
-	::Rf_setAttrib( x, R_NamesSymbol, names) ;
-	return x ;
-}
-  
+    namespace internal{
+            
+        template <typename InputIterator, typename KEY, typename VALUE, int RTYPE>
+        inline SEXP range_wrap_dispatch___impl__pair( InputIterator first, InputIterator last, Rcpp::traits::true_type ){
+            RCPP_DEBUG_3( "range_wrap_dispatch___impl__pair<KEY = %s, VALUE = %s, RTYPE = %d>\n", DEMANGLE(KEY), DEMANGLE(VALUE), RTYPE)
+            size_t size = std::distance( first, last ) ;
+            //typedef typename Rcpp::traits::storage_type<RTYPE>::type STORAGE ;
+            
+            CharacterVector names(size) ;
+            Vector<RTYPE> x(size) ;
+            Rcpp::String buffer ;
+            for( size_t i = 0; i < size ; i++, ++first){
+                buffer   = first->first ;
+                x[i]     = first->second ;
+                names[i] = buffer ;
+            }
+            x.attr( "names" ) = names ;
+            return x ;
+        }
+                        
+        template <typename InputIterator, typename KEY, typename VALUE, int RTYPE>
+        inline SEXP range_wrap_dispatch___impl__pair( InputIterator first, InputIterator last, Rcpp::traits::false_type ){
+            size_t size = std::distance( first, last ) ;
+            
+            Shield<SEXP> names( Rf_allocVector(STRSXP, size) ) ;
+            Shield<SEXP> x( Rf_allocVector(VECSXP, size) ) ;
+            Rcpp::String buffer ;
+            for( size_t i = 0; i < size ; i++, ++first){
+                buffer = first->first ;
+                SET_VECTOR_ELT( x, i, Rcpp::wrap(first->second) );
+                SET_STRING_ELT( names, i, buffer.get_sexp() ) ;
+            }
+            ::Rf_setAttrib( x, R_NamesSymbol, names) ;
+            return x ;
+        }
+      
+    
+    } // namespace internal
 
-} // namespace internal
+    template <typename T>
+    inline SEXP module_wrap_dispatch( const T& obj, Rcpp::traits::normal_wrap_tag ){
+        return wrap( obj ) ;
+    }
+    template <typename T>
+    inline SEXP module_wrap_dispatch( const T& obj, Rcpp::traits::pointer_wrap_tag ) {
+        return wrap( object< typename traits::un_pointer<T>::type >( obj ) ) ;
+    }
+    
 } // namespace Rcpp
 
 #endif
