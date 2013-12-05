@@ -306,7 +306,7 @@ namespace Rcpp{
         /**
          * @return the Rcpp namespace
          */
-        static Environment_Impl Rcpp_namespace(){
+        static Environment_Impl Rcpp98_namespace(){
             return Rcpp::internal::get_Rcpp98_namespace() ;
         }
     

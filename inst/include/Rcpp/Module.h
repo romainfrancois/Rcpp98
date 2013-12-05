@@ -76,7 +76,7 @@ namespace Rcpp{
         template <typename Class>
         SEXP make_new_object( Class* ptr ){
             Rcpp::XPtr<Class> xp( ptr, true ) ;
-            Function maker = Environment::Rcpp_namespace()[ "cpp_object_maker"] ;
+            Function maker = Environment::Rcpp98_namespace()[ "cpp_object_maker"] ;
             return maker( typeid(Class).name() , xp ) ;
         }
     } 

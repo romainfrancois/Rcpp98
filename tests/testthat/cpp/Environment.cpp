@@ -119,8 +119,8 @@ List runit_square( Environment e ){
 }
 
 // [[Rcpp::export]]
-Environment runit_Rcpp(){
-    return Environment::Rcpp_namespace() ;
+Environment runit_Rcpp98(){
+    return Environment::Rcpp98_namespace() ;
 }
 
 // [[Rcpp::export]]

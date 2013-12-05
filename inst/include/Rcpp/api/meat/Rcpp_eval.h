@@ -25,7 +25,7 @@ namespace Rcpp{
         
         reset_current_error() ; 
         
-        Environment RCPP = Environment::Rcpp_namespace(); 
+        Environment RCPP = Environment::Rcpp98_namespace(); 
         SEXP tryCatchSym               = ::Rf_install("tryCatch");
         SEXP evalqSym                  = ::Rf_install("evalq");
         SEXP conditionMessageSym       = ::Rf_install("conditionMessage");

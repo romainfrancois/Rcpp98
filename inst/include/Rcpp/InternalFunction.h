@@ -38,7 +38,7 @@ namespace Rcpp{
     private:
     	
         inline void set( SEXP xp){
-            Environment RCPP = Environment::Rcpp_namespace() ;
+            Environment RCPP = Environment::Rcpp98_namespace() ;
             Function intf = RCPP["internal_function"] ;
             Storage::set__( intf( xp ) ) ; 
         }
