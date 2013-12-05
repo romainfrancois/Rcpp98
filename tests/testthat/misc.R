@@ -69,8 +69,7 @@ test_that( "areMacrosDefined works", {
 test_that( "Na_Proxy handles comparison to NA", {
     expect_equal( 
         na_proxy(), 
-        rep(c(TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE) , 2), 
-        msg = "Na_Proxy NA == handling"
+        rep(c(TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE) , 2)
     )    
 })
 
@@ -95,5 +94,65 @@ test_that( "Reference works", {
     instrument <- Instrument$new(id="AAPL", description="Apple")
     
     expect_equal( runit_Reference_getId(instrument), "AAPL" )
+})
+
+test_that( "S4 works", {
+	setClass("track", representation(x="numeric", y="numeric"))
+	tr <- new( "track", x = 2, y = 2 )
+	expect_equal( 
+	    S4_methods(tr),
+		list( TRUE, TRUE, FALSE, 2.0, 2.0 )
+	)
+
+	S4_getslots( tr )
+	expect_equal( tr@x, 10.0 )
+	expect_equal( tr@y, 20.0 )
+
+	expect_error( S4_setslots( tr ))
+	expect_error( S4_setslots_2( tr ))
+
+	tr <- new( "track", x = 2, y = 3 )
+	expect_equal( S4_get_slot_x( tr ), 2)
+	expect_error( S4_get_slot_x( list( x = 2, y = 3 ) ))
+	expect_error( S4_get_slot_x( structure( list( x = 2, y = 3 ), class = "track" ) ))
+
+	tr <- S4_ctor( "track" )
+	expect_true( inherits( tr, "track" ) )
+	expect_equal( tr@x, numeric(0) )
+	expect_equal( tr@y, numeric(0) )
+	expect_error( S4_ctor( "someclassthatdoesnotexist" ) )
+	
+	setClass( "Foo", contains = "character", representation( x = "numeric" ) )
+	foo <- S4_dotdata( new( "Foo", "bla", x = 10 ) )
+	expect_equal( as.character( foo) , "foooo" )
+	
+})
+
+test_that( "S4 correctly defines is", {
+	setClass("track", representation(x="numeric", y="numeric"))
+	setClass("trackCurve", representation(smooth = "numeric"), contains = "track")
+
+	tr1 <- new( "track", x = 2, y = 3 )
+	tr2 <- new( "trackCurve", x = 2, y = 3, smooth = 5 )
+
+	expect_true( S4_is_track( tr1 ))
+	expect_true( S4_is_track( tr2 ))
+
+	expect_true( !S4_is_trackCurve( tr1 ))
+	expect_true( S4_is_trackCurve( tr2 ))
+})
+
+test_that( "Vector can be constructed from Proxies", {
+	setClass("track", representation(x="numeric", y="numeric"))
+	setClass("trackCurve", representation(smooth = "numeric"), contains = "track")
+
+	tr1 <- new( "track", x = 2, y = 3 )
+	expect_equal( S4_get_slot_x(tr1), 2 )
+
+	x <- 1:10
+	attr( x, "foo" ) <- "bar"
+
+	expect_equal( S4_get_attr_x(x), "bar" )
+
 })
 

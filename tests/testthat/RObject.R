@@ -1,164 +1,132 @@
+context( "RObject" )
+sourceCpp( "cpp/RObject.cpp" )
 
-.setUp <- Rcpp98:::unit_test_setup( "RObject.cpp" ) 
+test_that( "implicit as and wrap work fine with attributes", {
 
-test.RObject.asDouble <- function(){
-	checkEquals( asDouble(2.123), 4.246, msg = "as<double>( REALSXP ) " )
-	checkEquals( asDouble(2L), 4.0, msg = "as<double>( INTSXP ) " )
-	checkEquals( asDouble(as.raw(2L)), 4.0, msg = "as<double>( RAWSXP )" )
-	checkException( asDouble('2'), msg = "as<double>( STRSXP ) -> exception" )
-	checkException( asDouble(2:3), msg = "as<double> expects the vector to be of length 1" )
-}
+	expect_equal( asDouble(2.123), 4.246)
+	expect_equal( asDouble(2L), 4.0)
+	expect_equal( asDouble(as.raw(2L)), 4.0)
+	expect_error( asDouble('2'))
+	expect_error( asDouble(2:3))
 
-test.RObject.asInt <- function(){
-	checkEquals( asInt(2.123), 4L, msg = "as<int>( REALSXP )" )
-	checkEquals( asInt(2), 4L, msg = "as<int>( REALSXP )" )
-	checkEquals( asInt(2L), 4.0, msg = "as<int>( INTSXP )" )
-	checkEquals( asInt(as.raw(2L)), 4.0, msg = "as<int>( RAWSXP )" )
-	checkException( asInt( '2'), msg = "as<int> can not convert character" )
-	checkException( asInt( 2:3), msg = "as<int> expects the vector to be of length 1" )
-}
+	expect_equal( asInt(2.123), 4L)
+	expect_equal( asInt(2), 4L)
+	expect_equal( asInt(2L), 4.0)
+	expect_equal( asInt(as.raw(2L)), 4.0)
+	expect_error( asInt( '2'))
+	expect_error( asInt( 2:3))
 
-test.RObject.asStdString <- function(){
-	checkEquals( asStdString("abc"), "abcabc", msg = "as<std::string>" )
-	checkException( asStdString(NULL), msg = "as<std::string> expects character vector" )
-	checkException( asStdString(0L), msg = "as<std::string> expects character vector" )
-	checkException( asStdString(0.1), msg = "as<std::string> expects character vector" )
-	checkException( asStdString(as.raw(0L)), msg = "as<std::string> expects character vector" )
+	expect_equal( asStdString("abc"), "abcabc")
+	expect_error( asStdString(NULL))
+	expect_error( asStdString(0L))
+	expect_error( asStdString(0.1))
+	expect_error( asStdString(as.raw(0L)))
 
-	checkException( asStdString(letters), msg = "as<std::string> expects single string" )
-}
+	expect_error( asStdString(letters))
 
-test.RObject.asRaw <- function(){
-	checkEquals( asRaw(1L), as.raw(2L), msg = "as<Rbyte>(integer)" )
-	checkEquals( asRaw(1.3), as.raw(2L), msg = "as<Rbyte>(numeric)" )
-	checkEquals( asRaw(as.raw(1)), as.raw(2L), msg = "as<Rbyte>(raw)" )
-	checkException( asRaw(NULL) , msg = "as<Rbyte>(NULL) -> exception" )
-	checkException( asRaw("foo") , msg = "as<Rbyte>(character) -> exception" )
-	checkException( asRaw(1:2), msg = "as<Rbyte>(>1 integer) -> exception" )
-	checkException( asRaw(as.numeric(1:2)), msg = "as<Rbyte>(>1 numeric) -> exception" )
-	checkException( asRaw(as.raw(1:3)), msg = "as<Rbyte>(>1 raw) -> exception" )
-	checkException( asRaw(integer(0)), msg = "as<Rbyte>(0 integer) -> exception" )
-	checkException( asRaw(numeric(0)), msg = "as<Rbyte>(0 numeric) -> exception" )
-	checkException( asRaw(raw(0)), msg = "as<Rbyte>(0 raw) -> exception" )
-}
+	expect_equal( asRaw(1L), as.raw(2L))
+	expect_equal( asRaw(1.3), as.raw(2L))
+	expect_equal( asRaw(as.raw(1)), as.raw(2L))
+	expect_error( asRaw(NULL) )
+	expect_error( asRaw("foo") )
+	expect_error( asRaw(1:2))
+	expect_error( asRaw(as.numeric(1:2)))
+	expect_error( asRaw(as.raw(1:3)))
+	expect_error( asRaw(integer(0)))
+	expect_error( asRaw(numeric(0)))
+	expect_error( asRaw(raw(0)))
 
-test.RObject.asLogical <- function(){
-	checkTrue( !asLogical(TRUE), msg = "as<bool>(TRUE) -> true" )
-	checkTrue( asLogical(FALSE), msg = "as<bool>(FALSE) -> false" )
-	checkTrue( !asLogical(1L), msg = "as<bool>(1L) -> true" )
-	checkTrue( asLogical(0L), msg = "as<bool>(0L) -> false" )
-	checkTrue( !asLogical(1.0), msg = "as<bool>(1.0) -> true" )
-	checkTrue( asLogical(0.0), msg = "as<bool>0.0) -> false" )
-	checkTrue( !asLogical(as.raw(1)), msg = "as<bool>(aw.raw(1)) -> true" )
-	checkTrue( asLogical(as.raw(0)), msg = "as<bool>(as.raw(0)) -> false" )
+	expect_true( !asLogical(TRUE))
+	expect_true( asLogical(FALSE))
+	expect_true( !asLogical(1L))
+	expect_true( asLogical(0L))
+	expect_true( !asLogical(1.0))
+	expect_true( asLogical(0.0))
+	expect_true( !asLogical(as.raw(1)))
+	expect_true( asLogical(as.raw(0)))
 
-	checkException( asLogical(NULL), msg = "as<bool>(NULL) -> exception" )
-	checkException( asLogical(c(TRUE,FALSE)), msg = "as<bool>(>1 logical) -> exception" )
-	checkException( asLogical(1:2), msg = "as<bool>(>1 integer) -> exception" )
-	checkException( asLogical(1:2+.1), msg = "as<bool>(>1 numeric) -> exception" )
-	checkException( asLogical(as.raw(1:2)), msg = "as<bool>(>1 raw) -> exception" )
+	expect_error( asLogical(NULL))
+	expect_error( asLogical(c(TRUE,FALSE)))
+	expect_error( asLogical(1:2))
+	expect_error( asLogical(1:2+.1))
+	expect_error( asLogical(as.raw(1:2)))
 
-	checkException( asLogical(integer(0)), msg = "as<bool>(0 integer) -> exception" )
-	checkException( asLogical(numeric(0)), msg = "as<bool>(0 numeric) -> exception" )
-	checkException( asLogical(raw(0)), msg = "as<bool>(0 raw) -> exception" )
-}
+	expect_error( asLogical(integer(0)))
+	expect_error( asLogical(numeric(0)))
+	expect_error( asLogical(raw(0)))
 
-test.RObject.asStdVectorInt <- function(){
-    checkEquals( asStdVectorInt(x=2:5), 2:5*2L, msg = "as< std::vector<int> >(integer)" )
-    checkEquals( asStdVectorInt(x=2:5+.1), 2:5*2L, msg = "as< std::vector<int> >(numeric)" )
-    checkEquals( asStdVectorInt(x=as.raw(2:5)), 2:5*2L, msg = "as< std::vector<int> >(raw)" )
-    checkException( asStdVectorInt("foo"), msg = "as< std::vector<int> >(character) -> exception" )
-    checkException( asStdVectorInt(NULL), msg = "as< std::vector<int> >(NULL) -> exception" )
-}
+	expect_equal( asStdVectorInt(x=2:5), 2:5*2L)
+  expect_equal( asStdVectorInt(x=2:5+.1), 2:5*2L)
+  expect_equal( asStdVectorInt(x=as.raw(2:5)), 2:5*2L)
+  expect_error( asStdVectorInt("foo"))
+  expect_error( asStdVectorInt(NULL))
 
-test.RObject.asStdVectorDouble <- function(){
-    checkEquals( asStdVectorDouble(x=0.1+2:5), 2*(0.1+2:5), msg = "as< std::vector<double> >( numeric )" )
-    checkEquals( asStdVectorDouble(x=2:5), 2*(2:5), msg = "as< std::vector<double> >(integer)" )
-    checkEquals( asStdVectorDouble(x=as.raw(2:5)), 2*(2:5), msg = "as< std::vector<double> >(raw)" )
-    checkException( asStdVectorDouble("foo"), msg = "as< std::vector<double> >(character) -> exception" )
-    checkException( asStdVectorDouble(NULL), msg = "as< std::vector<double> >(NULL) -> exception" )
-}
+  expect_equal( asStdVectorDouble(x=0.1+2:5), 2*(0.1+2:5))
+  expect_equal( asStdVectorDouble(x=2:5), 2*(2:5))
+  expect_equal( asStdVectorDouble(x=as.raw(2:5)), 2*(2:5))
+  expect_error( asStdVectorDouble("foo"))
+  expect_error( asStdVectorDouble(NULL))
 
-test.RObject.asStdVectorRaw <- function(){
-	checkEquals( asStdVectorRaw(x=as.raw(0:9)), as.raw(2*(0:9)), msg = "as< std::vector<Rbyte> >(raw)" )
-    checkEquals( asStdVectorRaw(x=0:9), as.raw(2*(0:9)), msg = "as< std::vector<Rbyte> >( integer )" )
-    checkEquals( asStdVectorRaw(x=as.numeric(0:9)), as.raw(2*(0:9)), msg = "as< std::vector<Rbyte> >(numeric)" )
-    checkException( asStdVectorRaw("foo"), msg = "as< std::vector<Rbyte> >(character) -> exception" )
-    checkException( asStdVectorRaw(NULL), msg = "as< std::vector<Rbyte> >(NULL) -> exception" )
-}
+	expect_equal( asStdVectorRaw(x=as.raw(0:9)), as.raw(2*(0:9)))
+  expect_equal( asStdVectorRaw(x=0:9), as.raw(2*(0:9)))
+  expect_equal( asStdVectorRaw(x=as.numeric(0:9)), as.raw(2*(0:9)))
+  expect_error( asStdVectorRaw("foo"))
+  expect_error( asStdVectorRaw(NULL))
 
-test.RObject.asStdVectorBool <- function(){
-	checkEquals( asStdVectorBool(x=c(TRUE,FALSE)), c(FALSE, TRUE), msg = "as< std::vector<bool> >(logical)" )
-    checkEquals( asStdVectorBool(x=c(1L, 0L)), c(FALSE, TRUE), msg = "as< std::vector<bool> >(integer)" )
-    checkEquals( asStdVectorBool(x=c(1.0, 0.0)), c(FALSE, TRUE), msg = "as< std::vector<bool> >(numeric)" )
-    checkEquals( asStdVectorBool(x=as.raw(c(1,0))), c(FALSE, TRUE), msg = "as< std::vector<bool> >(raw)" )
-    checkException( asStdVectorBool("foo"), msg = "as< std::vector<bool> >(character) -> exception" )
-    checkException( asStdVectorBool(NULL), msg = "as< std::vector<bool> >(NULL) -> exception" )
-}
+	expect_equal( asStdVectorBool(x=c(TRUE,FALSE)), c(FALSE, TRUE))
+  expect_equal( asStdVectorBool(x=c(1L, 0L)), c(FALSE, TRUE))
+  expect_equal( asStdVectorBool(x=c(1.0, 0.0)), c(FALSE, TRUE))
+  expect_equal( asStdVectorBool(x=as.raw(c(1,0))), c(FALSE, TRUE))
+  expect_error( asStdVectorBool("foo"))
+  expect_error( asStdVectorBool(NULL))
 
-test.RObject.asStdVectorString <- function(){
-	checkEquals( asStdVectorString(c("foo", "bar")), c("foofoo", "barbar"), msg = "as< std::vector<std::string> >(character)" )
-	checkException( asStdVectorString(1L), msg = "as< std::vector<std::string> >(integer) -> exception" )
-	checkException( asStdVectorString(1.0), msg = "as< std::vector<std::string> >(numeric) -> exception" )
-	checkException( asStdVectorString(as.raw(1)), msg = "as< std::vector<std::string> >(raw) -> exception" )
-	checkException( asStdVectorString(TRUE), msg = "as< std::vector<std::string> >(logical) -> exception" )
-	checkException( asStdVectorString(NULL), msg = "as< std::vector<std::string> >(NULL) -> exception" )
-}
+	expect_equal( asStdVectorString(c("foo", "bar")), c("foofoo", "barbar"))
+	expect_error( asStdVectorString(1L))
+	expect_error( asStdVectorString(1.0))
+	expect_error( asStdVectorString(as.raw(1)))
+	expect_error( asStdVectorString(TRUE))
+	expect_error( asStdVectorString(NULL))
 
-test.RObject.stdsetint <- function(){
-	checkEquals( stdsetint(), c(0L, 1L), msg = "wrap( set<int> )" )
-}
+	expect_equal( stdsetint(), c(0L, 1L))
 
-test.RObject.stdsetdouble <- function(){
-	checkEquals( stdsetdouble(), as.numeric(0:1), msg = "wrap( set<double>" )
-}
+	expect_equal( stdsetdouble(), as.numeric(0:1))
 
-test.RObject.stdsetraw <- function(){
-	checkEquals( stdsetraw(), as.raw(0:1), msg = "wrap(set<raw>)" )
-}
+	expect_equal( stdsetraw(), as.raw(0:1))
+	expect_equal( stdsetstring(), c("bar", "foo"))
+})
 
-test.RObject.stdsetstring <- function(){
-	checkEquals( stdsetstring(), c("bar", "foo"), msg = "wrap(set<string>)" )
-}
-
-test.RObject.attributeNames <- function(){
+test_that( "api classes handle attributes", {
 	df <- data.frame( x = 1:10, y = 1:10 )
-	checkTrue( all( c("names","row.names","class") %in% attributeNames(df)), msg = "RObject.attributeNames" )
-}
+	expect_true( all( c("names","row.names","class") %in% attributeNames(df)))
 
-test.RObject.hasAttribute <- function(){
 	df <- data.frame( x = 1:10 )
-	checkTrue( hasAttribute( df ), msg = "RObject.hasAttribute" )
-}
+	expect_true( hasAttribute( df ))
 
-test.RObject.attr <- function(){
 	df <- data.frame( x = 1:150 )
 	rownames(df) <- 1:150
-	checkEquals( attr_( iris ), 1:150, msg = "RObject.attr" )
-}
+	expect_equal( attr_( iris ), 1:150)
 
-test.RObject.attr.set <- function(){
-	checkEquals( attr(attr_set(), "foo"), 10L, msg = "RObject.attr() = " )
-}
+	expect_equal( attr(attr_set(), "foo"), 10L)
+})
 
-test.RObject.isNULL <- function(){
+test_that( ".isNULL works as expected", {
 	df <- data.frame( x = 1:10 )
-	checkTrue( !isNULL( df ), msg = "RObject.isNULL(data frame) -> false" )
-	checkTrue( !isNULL(1L), msg = "RObject.isNULL(integer) -> false" )
-	checkTrue( !isNULL(1.0), msg = "RObject.isNULL(numeric) -> false" )
-	checkTrue( !isNULL(as.raw(1)), msg = "RObject.isNULL(raw) -> false" )
-	checkTrue( !isNULL(letters), msg = "RObject.isNULL(character) -> false")
-	checkTrue( !isNULL(test.RObject.isNULL), msg = "RObject.isNULL(function) -> false" )
-	checkTrue( !isNULL(.GlobalEnv), msg = "RObject.isNULL(environment) -> false" )
-	checkTrue( isNULL(NULL), msg = "RObject.isNULL(NULL) -> true" )
-}
+	expect_true( !isNULL( df ))
+	expect_true( !isNULL(1L))
+	expect_true( !isNULL(1.0))
+	expect_true( !isNULL(as.raw(1)))
+	expect_true( !isNULL(letters))
+	expect_true( !isNULL(test.RObject.isNULL))
+	expect_true( !isNULL(.GlobalEnv))
+	expect_true( isNULL(NULL))
+})
 
-test.RObject.inherits <- function(){
+test_that( ".inherits works", {
 	x <- 1:10
-	checkTrue( !inherits_(x) )
+	expect_true( !inherits_(x) )
 	class(x) <- "foo"
-	checkTrue( inherits_(x) )
+	expect_true( inherits_(x) )
 	class(x) <- c("foo", "bar" )
-	checkTrue( inherits_(x) )
-}
+	expect_true( inherits_(x) )
+})
 
