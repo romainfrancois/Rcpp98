@@ -1,148 +1,106 @@
+context( "Language" )
+sourceCpp( "cpp/Language.cpp" )
 
-.setUp <- Rcpp98:::unit_test_setup( "language.cpp" ) 
+test_that( "Language handles R objects", {
+	expect_equal( runit_language( call("rnorm") ), call("rnorm" ))
+	expect_error( runit_language(test.Language))
+	expect_error( runit_language(new.env()))
+	expect_error( runit_language(1:10))
+	expect_error( runit_language(TRUE))
+	expect_error( runit_language(1.3))
+	expect_error( runit_language(as.raw(1) ))
+})
 
-test.Language <- function(){
-	checkEquals( runit_language( call("rnorm") ), call("rnorm" ), msg = "Language( LANGSXP )" )
-	checkException( runit_language(test.Language), msg = "Language not compatible with function" )
-	checkException( runit_language(new.env()), msg = "Language not compatible with environment" )
-	checkException( runit_language(1:10), msg = "Language not compatible with integer" )
-	checkException( runit_language(TRUE), msg = "Language not compatible with logical" )
-	checkException( runit_language(1.3), msg = "Language not compatible with numeric" )
-	checkException( runit_language(as.raw(1) ), msg = "Language not compatible with raw" )
-}
+test_that( "Languge handles arbitrary number of arguments", {
+	expect_equal( runit_lang_variadic_1(), call("rnorm", 10L, 0.0, 2.0 ) )
+	expect_equal( runit_lang_variadic_2(), call("rnorm", 10L, mean = 0.0, 2.0 ) )
+})
 
-test.Language.variadic <- function(){
-	checkEquals( runit_lang_variadic_1(), call("rnorm", 10L, 0.0, 2.0 ), 
-	    msg = "variadic templates" )
+test_that( "Language::push_back works", {
+	expect_equal( runit_lang_push_back(), call("rnorm", 10L, mean = 0.0, 2.0 ) )
+})
 
-	checkEquals( runit_lang_variadic_2(), call("rnorm", 10L, mean = 0.0, 2.0 ),
-		msg = "variadic templates (with names)" )
-}
+test_that( "Language handles index operator", {
+	expect_equal( runit_lang_square_rv(), 10.0)
+	expect_equal( runit_lang_square_lv(), call("rnorm", "foobar", 20.0, 20.0) )
+})
 
-# same as above but without variadic templates
-test.Language.push.back <- function(){
-	checkEquals( runit_lang_push_back(),
-		call("rnorm", 10L, mean = 0.0, 2.0 ),
-		msg = "Language::push_back" )
-}
+test_that( "Language can evaluate", {
+	expect_equal( runit_lang_fun(sort, sample(1:10)), 1:10)
+	e <- new.env()
+	e[["y"]] <- 1:10
+	expect_equal( runit_lang_inenv(e), sum(1:10))
+})
 
-test.Language.square <- function(){
-	checkEquals( runit_lang_square_rv(), 10.0, msg = "Language::operator[] used as rvalue" )
-	checkEquals( runit_lang_square_lv(), call("rnorm", "foobar", 20.0, 20.0) , msg = "Pairlist::operator[] used as lvalue" )
-}
-
-test.Language.function <- function(){
-	checkEquals( runit_lang_fun(sort, sample(1:10)), 1:10, msg = "Language( Function ) " )
-}
-
-test.Language.inputoperator <- function(){
-	checkEquals( runit_lang_inputop(), call("rnorm", 10L, sd = 10L ) , msg = "Language<<" )
-}
-
-test.Language.unary.call <- function(){
-	checkEquals(
+test_that( "Language can be wraped as unary_call, fixed_call, and binary_call", {
+	expect_equal(
 		runit_lang_unarycall( 1:10 ),
-		lapply( 1:10, function(n) seq(from=n, to = 0 ) ),
-		msg = "c++ lapply using calls" )
-
-}
-
-test.Language.unary.call.index <- function(){
-	checkEquals(
+		lapply( 1:10, function(n) seq(from=n, to = 0 ) ) 
+	)
+	expect_equal(
 		runit_lang_unarycallindex( 1:10 ),
-		lapply( 1:10, function(n) seq(from=10, to = n ) ),
-		msg = "c++ lapply using calls" )
-}
-
-test.Language.binary.call <- function(){
-	checkEquals(
+		lapply( 1:10, function(n) seq(from=10, to = n )) )
+	expect_equal(
 		runit_lang_binarycall( 1:10, 11:20 ),
-		lapply( 1:10, function(n) seq(n, n+10) ),
-		msg = "c++ lapply using calls" )
-}
-
-test.Language.fixed.call <- function(){
+		lapply( 1:10, function(n) seq(n, n+10) ) )
 	set.seed(123)
 	res <- runit_lang_fixedcall()
 	set.seed(123)
 	exp <- lapply( 1:10, function(n) rnorm(10) )
-	checkEquals( res, exp, msg = "std::generate" )
-}
+	expect_equal( res, exp)
+})
 
-test.Language.in.env <- function(){
-	e <- new.env()
-	e[["y"]] <- 1:10
-	checkEquals( runit_lang_inenv(e), sum(1:10), msg = "Language::eval( SEXP )" )
-}
+context( "Pairlist" )
 
-test.Pairlist <- function(){
-	checkEquals( runit_pairlist( pairlist("rnorm") ), pairlist("rnorm" ), msg = "Pairlist( LISTSXP )" )
-	checkEquals( runit_pairlist( call("rnorm") ), pairlist(as.name("rnorm")), msg = "Pairlist( LANGSXP )" )
-	checkEquals( runit_pairlist(1:10), as.pairlist(1:10) , msg = "Pairlist( INTSXP) " )
-	checkEquals( runit_pairlist(TRUE), as.pairlist( TRUE) , msg = "Pairlist( LGLSXP )" )
-	checkEquals( runit_pairlist(1.3), as.pairlist(1.3), msg = "Pairlist( REALSXP) " )
-	checkEquals( runit_pairlist(as.raw(1) ), as.pairlist(as.raw(1)), msg = "Pairlist( RAWSXP)" )
+test_that( "Pairlist handles R objects", {
+	expect_equal( runit_pairlist( pairlist("rnorm") ), pairlist("rnorm" ))
+	expect_equal( runit_pairlist( call("rnorm") ), pairlist(as.name("rnorm")))
+	expect_equal( runit_pairlist(1:10), as.pairlist(1:10) )
+	expect_equal( runit_pairlist(TRUE), as.pairlist( TRUE) )
+	expect_equal( runit_pairlist(1.3), as.pairlist(1.3))
+	expect_equal( runit_pairlist(as.raw(1) ), as.pairlist(as.raw(1)))
 
-	checkException( runit_pairlist(runit_pairlist), msg = "Pairlist not compatible with function" )
-	checkException( runit_pairlist(new.env()), msg = "Pairlist not compatible with environment" )
+	expect_error( runit_pairlist(runit_pairlist))
+	expect_error( runit_pairlist(new.env()))
 
-}
+})
 
-test.Pairlist.variadic <- function(){
-	checkEquals( runit_pl_variadic_1(), pairlist("rnorm", 10L, 0.0, 2.0 ),
+test_that( "Pairlist can handle arbitrary number of arguments", {
+	expect_equal( runit_pl_variadic_1(), pairlist("rnorm", 10L, 0.0, 2.0 ),
 		msg = "variadic templates" )
-	checkEquals( runit_pl_variadic_2(), pairlist("rnorm", 10L, mean = 0.0, 2.0 ),
+	expect_equal( runit_pl_variadic_2(), pairlist("rnorm", 10L, mean = 0.0, 2.0 ),
 		msg = "variadic templates (with names)" )
-}
+})
 
-test.Pairlist.push.front <- function(){
-	checkEquals( runit_pl_push_front(),
-		pairlist( foobar = 10, "foo", 10.0, 1L),
-		msg = "Pairlist::push_front" )
-}
+test_that( "Pairlist has stl-type methods: size, remove, insert, replace, push_front and push_back", {
+	expect_equal( runit_pl_push_front(),
+		pairlist( foobar = 10, "foo", 10.0, 1L))
+	expect_equal( runit_pl_push_back(),
+		pairlist( 1L, 10.0, "foo", foobar = 10))
+	expect_equal( runit_pl_insert(),
+		pairlist( 30.0, 1L, bla = "bla", 10.0, 20.0, "foobar" ))
+	expect_equal( runit_pl_replace(),
+		pairlist( first = 1, 20.0 , FALSE))
+	expect_equal( runit_pl_size(), 3L)
+	expect_equal( runit_pl_remove_1(), pairlist(10.0, 20.0))
+	expect_equal( runit_pl_remove_2(), pairlist(1L, 10.0))
+	expect_equal( runit_pl_remove_3(), pairlist(1L, 20.0))
+})
 
-test.Pairlist.push.back <- function(){
-	checkEquals( runit_pl_push_back(),
-		pairlist( 1L, 10.0, "foo", foobar = 10),
-		msg = "Pairlist::push_back" )
-}
+test_that( "Pairlist::operator[]", {
+	expect_equal( runit_pl_square_1(), 10.0)
+	expect_equal( runit_pl_square_2(), pairlist(1L, "foobar", 1L) )
+})
 
-test.Pairlist.insert <- function(){
-	checkEquals( runit_pl_insert(),
-		pairlist( 30.0, 1L, bla = "bla", 10.0, 20.0, "foobar" ),
-		msg = "Pairlist::replace" )
-}
+context( "Formula" )
 
-test.Pairlist.replace <- function(){
-	checkEquals( runit_pl_replace(),
-		pairlist( first = 1, 20.0 , FALSE), msg = "Pairlist::replace" )
-}
+test_that( "Formula works", {
+	expect_equal( runit_formula_(), x ~ y + z)
 
-test.Pairlist.size <- function(){
-	checkEquals( runit_pl_size(), 3L, msg = "Pairlist::size()" )
-}
-
-test.Pairlist.remove <- function(){
-	checkEquals( runit_pl_remove_1(), pairlist(10.0, 20.0), msg = "Pairlist::remove(0)" )
-	checkEquals( runit_pl_remove_2(), pairlist(1L, 10.0), msg = "Pairlist::remove(0)" )
-	checkEquals( runit_pl_remove_3(), pairlist(1L, 20.0), msg = "Pairlist::remove(0)" )
-}
-
-test.Pairlist.square <- function(){
-	checkEquals( runit_pl_square_1(), 10.0, msg = "Pairlist::operator[] used as rvalue" )
-	checkEquals( runit_pl_square_2(), pairlist(1L, "foobar", 1L) , msg = "Pairlist::operator[] used as lvalue" )
-}
-
-
-test.Formula <- function(){
-	checkEquals( runit_formula_(), x ~ y + z, msg = "Formula( string )" )
-}
-
-test.Formula.SEXP <- function(){
-	checkEquals( runit_formula_SEXP( x ~ y + z), x ~ y + z, msg = "Formula( SEXP = formula )" )
-	checkEquals( runit_formula_SEXP( "x ~ y + z" ), x ~ y + z, msg = "Formula( SEXP = STRSXP )" )
-	checkEquals( runit_formula_SEXP( parse( text = "x ~ y + z") ), x ~ y + z, msg = "Formula( SEXP = EXPRSXP )" )
-	checkEquals( runit_formula_SEXP( list( "x ~ y + z") ), x ~ y + z, msg = "Formula( SEXP = VECSXP(1 = STRSXP) )" )
-	checkEquals( runit_formula_SEXP( list( x ~ y + z) ), x ~ y + z, msg = "Formula( SEXP = VECSXP(1 = formula) )" )
-}
+	expect_equal( runit_formula_SEXP( x ~ y + z), x ~ y + z)
+	expect_equal( runit_formula_SEXP( "x ~ y + z" ), x ~ y + z)
+	expect_equal( runit_formula_SEXP( parse( text = "x ~ y + z") ), x ~ y + z)
+	expect_equal( runit_formula_SEXP( list( "x ~ y + z") ), x ~ y + z)
+	expect_equal( runit_formula_SEXP( list( x ~ y + z) ), x ~ y + z)
+})
 
