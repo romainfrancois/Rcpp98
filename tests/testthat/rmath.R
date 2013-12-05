@@ -1,444 +1,428 @@
+context( "R math" )
+sourceCpp( "cpp/rmath.cpp" )
 
-.setUp <- Rcpp98:::unit_test_setup( "rmath.cpp" )
-
-test.rmath.norm <- function() {
+test_that( "(dpq)norm gives correct results", {
     x <- 0.25
     a <- 1.25
     b <- 2.50
-    checkEquals(runit_dnorm(x, a, b),
-                c(dnorm(x, a, b, log=FALSE), dnorm(x, a, b, log=TRUE)),
-                msg = " rmath.dnorm")
+    expect_equal(runit_dnorm(x, a, b),
+                c(dnorm(x, a, b, log=FALSE), dnorm(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pnorm(x, a, b),
+    expect_equal(runit_pnorm(x, a, b),
                 c(pnorm(x, a, b, lower=TRUE, log=FALSE),  pnorm(log(x), a, b, lower=TRUE, log=TRUE),
-                  pnorm(x, a, b, lower=FALSE, log=FALSE), pnorm(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pnorm")
+                  pnorm(x, a, b, lower=FALSE, log=FALSE), pnorm(log(x), a, b, lower=FALSE, log=TRUE))
+                )
 
-    checkEquals(runit_qnorm(x, a, b),
+    expect_equal(runit_qnorm(x, a, b),
                 c(qnorm(x, a, b, lower=TRUE, log=FALSE),  qnorm(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qnorm(x, a, b, lower=FALSE, log=FALSE), qnorm(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qnorm")
-}
+                  qnorm(x, a, b, lower=FALSE, log=FALSE), qnorm(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-test.rmath.unif <- function() {
+test_that( "(dpq)unif is correct", {
     x <- 0.25
     a <- 1.25
     b <- 2.50
-    checkEquals(runit_dunif(x, a, b),
-                c(dunif(x, a, b, log=FALSE), dunif(x, a, b, log=TRUE)),
-                msg = " rmath.dunif")
+    expect_equal(runit_dunif(x, a, b),
+                c(dunif(x, a, b, log=FALSE), dunif(x, a, b, log=TRUE)))
 
-    checkEquals(runit_punif(x, a, b),
+    expect_equal(runit_punif(x, a, b),
                 c(punif(x, a, b, lower=TRUE, log=FALSE),  punif(log(x), a, b, lower=TRUE, log=TRUE),
-                  punif(x, a, b, lower=FALSE, log=FALSE), punif(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.punif")
+                  punif(x, a, b, lower=FALSE, log=FALSE), punif(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qunif(x, a, b),
+    expect_equal(runit_qunif(x, a, b),
                 c(qunif(x, a, b, lower=TRUE, log=FALSE),  qunif(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qunif(x, a, b, lower=FALSE, log=FALSE), qunif(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qunif")
-}
+                  qunif(x, a, b, lower=FALSE, log=FALSE), qunif(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-test.rmath.gamma <- function() {
+test_that( "(dpq)gamma is correct", {
     x <- 0.25
     a <- 1.0
     b <- 1.0
-    checkEquals(runit_dgamma(x, a, b),
-                c(dgamma(x, a, b, log=FALSE), dgamma(x, a, b, log=TRUE)),
-                msg = " rmath.dgamma")
+    expect_equal(runit_dgamma(x, a, b),
+                c(dgamma(x, a, b, log=FALSE), dgamma(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pgamma(x, a, b),
+    expect_equal(runit_pgamma(x, a, b),
                 c(pgamma(x, a, b, lower=TRUE, log=FALSE),  pgamma(log(x), a, b, lower=TRUE, log=TRUE),
-                  pgamma(x, a, b, lower=FALSE, log=FALSE), pgamma(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pgamma")
+                  pgamma(x, a, b, lower=FALSE, log=FALSE), pgamma(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qgamma(x, a, b),
+    expect_equal(runit_qgamma(x, a, b),
                 c(qgamma(x, a, b, lower=TRUE, log=FALSE),  qgamma(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qgamma(x, a, b, lower=FALSE, log=FALSE), qgamma(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qgamma")
+                  qgamma(x, a, b, lower=FALSE, log=FALSE), qgamma(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 }
 
-test.rmath.beta <- function() {
+test_that( "(dpq)beta is correct", {
     x <- 0.25
     a <- 0.8
     b <- 2.5
-    checkEquals(runit_dbeta(x, a, b),
-                c(dbeta(x, a, b, log=FALSE), dbeta(x, a, b, log=TRUE)),
-                msg = " rmath.dbeta")
+    expect_equal(runit_dbeta(x, a, b),
+                c(dbeta(x, a, b, log=FALSE), dbeta(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pbeta(x, a, b),
+    expect_equal(runit_pbeta(x, a, b),
                 c(pbeta(x, a, b, lower=TRUE, log=FALSE),  pbeta(log(x), a, b, lower=TRUE, log=TRUE),
-                  pbeta(x, a, b, lower=FALSE, log=FALSE), pbeta(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pbeta")
+                  pbeta(x, a, b, lower=FALSE, log=FALSE), pbeta(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qbeta(x, a, b),
+    expect_equal(runit_qbeta(x, a, b),
                 c(qbeta(x, a, b, lower=TRUE, log=FALSE),  qbeta(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qbeta(x, a, b, lower=FALSE, log=FALSE), qbeta(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qbeta")
-}
+                  qbeta(x, a, b, lower=FALSE, log=FALSE), qbeta(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.lnorm <- function() {
+test_that( "(dpq)lnorm is correct", {
     x <- 0.25
     a <- 0.8
     b <- 2.5
-    checkEquals(runit_dlnorm(x, a, b),
-                c(dlnorm(x, a, b, log=FALSE), dlnorm(x, a, b, log=TRUE)),
-                msg = " rmath.dlnorm")
+    expect_equal(runit_dlnorm(x, a, b),
+                c(dlnorm(x, a, b, log=FALSE), dlnorm(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_plnorm(x, a, b),
+    expect_equal(runit_plnorm(x, a, b),
                 c(plnorm(x, a, b, lower=TRUE, log=FALSE),  plnorm(log(x), a, b, lower=TRUE, log=TRUE),
-                  plnorm(x, a, b, lower=FALSE, log=FALSE), plnorm(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.plnorm")
+                  plnorm(x, a, b, lower=FALSE, log=FALSE), plnorm(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qlnorm(x, a, b),
+    expect_equal(runit_qlnorm(x, a, b),
                 c(qlnorm(x, a, b, lower=TRUE, log=FALSE),  qlnorm(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qlnorm(x, a, b, lower=FALSE, log=FALSE), qlnorm(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qlnorm")
-}
+                  qlnorm(x, a, b, lower=FALSE, log=FALSE), qlnorm(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.chisq <- function() {
+test_that( "(dpq)chisq is correct", 
     x <- 0.25
     a <- 0.8
-    checkEquals(runit_dchisq(x, a),
-                c(dchisq(x, a, log=FALSE), dchisq(x, a, log=TRUE)),
-                msg = " rmath.dchisq")
+    expect_equal(runit_dchisq(x, a),
+                c(dchisq(x, a, log=FALSE), dchisq(x, a, log=TRUE))
+                )
 
-    checkEquals(runit_pchisq(x, a),
+    expect_equal(runit_pchisq(x, a),
                 c(pchisq(x, a, lower=TRUE, log=FALSE),  pchisq(log(x), a, lower=TRUE, log=TRUE),
-                  pchisq(x, a, lower=FALSE, log=FALSE), pchisq(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.pchisq")
+                  pchisq(x, a, lower=FALSE, log=FALSE), pchisq(log(x), a, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qchisq(x, a),
+    expect_equal(runit_qchisq(x, a),
                 c(qchisq(x, a, lower=TRUE, log=FALSE),  qchisq(log(x), a, lower=TRUE,  log=TRUE),
-                  qchisq(x, a, lower=FALSE, log=FALSE), qchisq(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.qchisq")
-}
+                  qchisq(x, a, lower=FALSE, log=FALSE), qchisq(log(x), a, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.nchisq <- function() {
+test_that( "(dpq)nchisq is correct", {
     x <- 0.25
     a <- 0.8
     b <- 2.5
-    checkEquals(runit_dnchisq(x, a, b),
-                c(dchisq(x, a, b, log=FALSE), dchisq(x, a, b, log=TRUE)),
-                msg = " rmath.dnchisq")
+    expect_equal(runit_dnchisq(x, a, b),
+                c(dchisq(x, a, b, log=FALSE), dchisq(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pnchisq(x, a, b),
+    expect_equal(runit_pnchisq(x, a, b),
                 c(pchisq(x, a, b, lower=TRUE, log=FALSE),  pchisq(log(x), a, b, lower=TRUE, log=TRUE),
-                  pchisq(x, a, b, lower=FALSE, log=FALSE), pchisq(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pnchisq")
+                  pchisq(x, a, b, lower=FALSE, log=FALSE), pchisq(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qnchisq(x, a, b),
+    expect_equal(runit_qnchisq(x, a, b),
                 c(qchisq(x, a, b, lower=TRUE, log=FALSE),  qchisq(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qchisq(x, a, b, lower=FALSE, log=FALSE), qchisq(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qnchisq")
-}
+                  qchisq(x, a, b, lower=FALSE, log=FALSE), qchisq(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.f <- function() {
+test_that( "(dpq)f is correct", {
     x <- 0.25
     a <- 0.8
     b <- 2.5
-    checkEquals(runit_df(x, a, b),
-                c(df(x, a, b, log=FALSE), df(x, a, b, log=TRUE)),
-                msg = " rmath.df")
+    expect_equal(runit_df(x, a, b),
+                c(df(x, a, b, log=FALSE), df(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pf(x, a, b),
+    expect_equal(runit_pf(x, a, b),
                 c(pf(x, a, b, lower=TRUE, log=FALSE),  pf(log(x), a, b, lower=TRUE, log=TRUE),
-                  pf(x, a, b, lower=FALSE, log=FALSE), pf(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pf")
+                  pf(x, a, b, lower=FALSE, log=FALSE), pf(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qf(x, a, b),
+    expect_equal(runit_qf(x, a, b),
                 c(qf(x, a, b, lower=TRUE, log=FALSE),  qf(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qf(x, a, b, lower=FALSE, log=FALSE), qf(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qf")
-}
+                  qf(x, a, b, lower=FALSE, log=FALSE), qf(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.t <- function() {
+test_that( "(dpq)t is correct", {
     x <- 0.25
     a <- 0.8
-    checkEquals(runit_dt(x, a),
-                c(dt(x, a, log=FALSE), dt(x, a, log=TRUE)),
-                msg = " rmath.dt")
+    expect_equal(runit_dt(x, a),
+                c(dt(x, a, log=FALSE), dt(x, a, log=TRUE))
+                )
 
-    checkEquals(runit_pt(x, a),
+    expect_equal(runit_pt(x, a),
                 c(pt(x, a, lower=TRUE, log=FALSE),  pt(log(x), a, lower=TRUE, log=TRUE),
-                  pt(x, a, lower=FALSE, log=FALSE), pt(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.pt")
+                  pt(x, a, lower=FALSE, log=FALSE), pt(log(x), a, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qt(x, a),
+    expect_equal(runit_qt(x, a),
                 c(qt(x, a, lower=TRUE, log=FALSE),  qt(log(x), a, lower=TRUE,  log=TRUE),
-                  qt(x, a, lower=FALSE, log=FALSE), qt(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.qt")
-}
+                  qt(x, a, lower=FALSE, log=FALSE), qt(log(x), a, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.binom <- function() {
+test_that( "(dpq)binom is correct", {
     x <- 5
     a <- 10
     b <- 0.5
-    checkEquals(runit_dbinom(x, a, b),
-                c(dbinom(x, a, b, log=FALSE), dbinom(x, a, b, log=TRUE)),
-                msg = " rmath.dbinom")
+    expect_equal(runit_dbinom(x, a, b),
+                c(dbinom(x, a, b, log=FALSE), dbinom(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pbinom(x, a, b),
+    expect_equal(runit_pbinom(x, a, b),
                 c(pbinom(x, a, b, lower=TRUE, log=FALSE),  pbinom(log(x), a, b, lower=TRUE, log=TRUE),
-                  pbinom(x, a, b, lower=FALSE, log=FALSE), pbinom(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pbinom")
+                  pbinom(x, a, b, lower=FALSE, log=FALSE), pbinom(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qbinom(x, a, b),
+    expect_equal(runit_qbinom(x, a, b),
                 c(qbinom(x, a, b, lower=TRUE, log=FALSE),  qbinom(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qbinom(x, a, b, lower=FALSE, log=FALSE), qbinom(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qbinom")
-}
+                  qbinom(x, a, b, lower=FALSE, log=FALSE), qbinom(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.cauchy <- function() {
+test_that( "(dpq)cauchy works", {
     x <- 0.25
     a <- 0.8
     b <- 2.5
-    checkEquals(runit_dcauchy(x, a, b),
-                c(dcauchy(x, a, b, log=FALSE), dcauchy(x, a, b, log=TRUE)),
-                msg = " rmath.dcauchy")
+    expect_equal(runit_dcauchy(x, a, b),
+                c(dcauchy(x, a, b, log=FALSE), dcauchy(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pcauchy(x, a, b),
+    expect_equal(runit_pcauchy(x, a, b),
                 c(pcauchy(x, a, b, lower=TRUE, log=FALSE),  pcauchy(log(x), a, b, lower=TRUE, log=TRUE),
-                  pcauchy(x, a, b, lower=FALSE, log=FALSE), pcauchy(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pcauchy")
+                  pcauchy(x, a, b, lower=FALSE, log=FALSE), pcauchy(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qcauchy(x, a, b),
+    expect_equal(runit_qcauchy(x, a, b),
                 c(qcauchy(x, a, b, lower=TRUE, log=FALSE),  qcauchy(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qcauchy(x, a, b, lower=FALSE, log=FALSE), qcauchy(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qcauchy")
-}
+                  qcauchy(x, a, b, lower=FALSE, log=FALSE), qcauchy(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.exp <- function() {
+test_that( "(dpq)exp works", {
     x <- 0.25
     a <- 1.0
-    checkEquals(runit_dexp(x, a),
-                c(dexp(x, a, log=FALSE), dexp(x, a, log=TRUE)),
-                msg = " rmath.dexp")
+    expect_equal(runit_dexp(x, a),
+                c(dexp(x, a, log=FALSE), dexp(x, a, log=TRUE))
+                )
 
-    checkEquals(runit_pexp(x, a),
+    expect_equal(runit_pexp(x, a),
                 c(pexp(x, a, lower=TRUE, log=FALSE),  pexp(log(x), a, lower=TRUE, log=TRUE),
-                  pexp(x, a, lower=FALSE, log=FALSE), pexp(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.pexp")
+                  pexp(x, a, lower=FALSE, log=FALSE), pexp(log(x), a, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qexp(x, a),
+    expect_equal(runit_qexp(x, a),
                 c(qexp(x, a, lower=TRUE, log=FALSE),  qexp(log(x), a, lower=TRUE,  log=TRUE),
-                  qexp(x, a, lower=FALSE, log=FALSE), qexp(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.qexp")
-}
+                  qexp(x, a, lower=FALSE, log=FALSE), qexp(log(x), a, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.geom <- function() {
+test_that( "(dpq)geom works", {
     x <- 1
     a <- 0.75
-    checkEquals(runit_dgeom(x, a),
-                c(dgeom(x, a, log=FALSE), dgeom(x, a, log=TRUE)),
-                msg = " rmath.dgeom")
+    expect_equal(runit_dgeom(x, a),
+                c(dgeom(x, a, log=FALSE), dgeom(x, a, log=TRUE))
+                )
 
-    checkEquals(runit_pgeom(x, a),
+    expect_equal(runit_pgeom(x, a),
                 c(pgeom(x, a, lower=TRUE, log=FALSE),  pgeom(log(x), a, lower=TRUE, log=TRUE),
-                  pgeom(x, a, lower=FALSE, log=FALSE), pgeom(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.pgeom")
+                  pgeom(x, a, lower=FALSE, log=FALSE), pgeom(log(x), a, lower=FALSE, log=TRUE))
+                  )
 
-    checkEquals(runit_qgeom(x, a),
+    expect_equal(runit_qgeom(x, a),
                 c(qgeom(x, a, lower=TRUE, log=FALSE),  qgeom(log(x), a, lower=TRUE,  log=TRUE),
-                  qgeom(x, a, lower=FALSE, log=FALSE), qgeom(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.qgeom")
-}
+                  qgeom(x, a, lower=FALSE, log=FALSE), qgeom(log(x), a, lower=FALSE, log=TRUE))
+                  )
+})
 
-test.rmath.hyper <- function() {
+test_that( "(dpq)hyper works", {
     x <- 5
     a <- 10
     b <- 7
     c <- 8
-    checkEquals(runit_dhyper(x, a, b, c),
-                c(dhyper(x, a, b, c, log=FALSE), dhyper(x, a, b, c, log=TRUE)),
-                msg = " rmath.dhyper")
+    expect_equal(runit_dhyper(x, a, b, c),
+                c(dhyper(x, a, b, c, log=FALSE), dhyper(x, a, b, c, log=TRUE))
+                )
 
-    checkEquals(runit_phyper(x, a, b, c),
+    expect_equal(runit_phyper(x, a, b, c),
                 c(phyper(x, a, b, c, lower=TRUE, log=FALSE),  phyper(log(x), a, b, c, lower=TRUE, log=TRUE),
-                  phyper(x, a, b, c, lower=FALSE, log=FALSE), phyper(log(x), a, b, c, lower=FALSE, log=TRUE)),
-                msg = " rmath.phyper")
+                  phyper(x, a, b, c, lower=FALSE, log=FALSE), phyper(log(x), a, b, c, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qhyper(x, a, b, c),
+    expect_equal(runit_qhyper(x, a, b, c),
                 c(qhyper(x, a, b, c, lower=TRUE, log=FALSE),  qhyper(log(x), a, b, c, lower=TRUE,  log=TRUE),
-                  qhyper(x, a, b, c, lower=FALSE, log=FALSE), qhyper(log(x), a, b, c, lower=FALSE, log=TRUE)),
-                msg = " rmath.qhyper")
-}
+                  qhyper(x, a, b, c, lower=FALSE, log=FALSE), qhyper(log(x), a, b, c, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.nbinom <- function() {
+test_that( "(dpq)nbinom works", {
     x <- 2
     a <- 8
     b <- 0.25
-    checkEquals(runit_dnbinom(x, a, b),
-                c(dnbinom(x, a, b, log=FALSE), dnbinom(x, a, b, log=TRUE)),
-                msg = " rmath.dnbinom")
+    expect_equal(runit_dnbinom(x, a, b),
+                c(dnbinom(x, a, b, log=FALSE), dnbinom(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pnbinom(x, a, b),
+    expect_equal(runit_pnbinom(x, a, b),
                 c(pnbinom(x, a, b, lower=TRUE, log=FALSE),  pnbinom(log(x), a, b, lower=TRUE, log=TRUE),
-                  pnbinom(x, a, b, lower=FALSE, log=FALSE), pnbinom(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pnbinom")
+                  pnbinom(x, a, b, lower=FALSE, log=FALSE), pnbinom(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qnbinom(x, a, b),
+    expect_equal(runit_qnbinom(x, a, b),
                 c(qnbinom(x, a, b, lower=TRUE, log=FALSE),  qnbinom(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qnbinom(x, a, b, lower=FALSE, log=FALSE), qnbinom(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qnbinom")
-}
+                  qnbinom(x, a, b, lower=FALSE, log=FALSE), qnbinom(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.pois <- function() {
+test_that( "(dpq)pois works", {
     x <- 2
     a <- 1.0
-    checkEquals(runit_dpois(x, a),
-                c(dpois(x, a, log=FALSE), dpois(x, a, log=TRUE)),
-                msg = " rmath.dpois")
+    expect_equal(runit_dpois(x, a),
+                c(dpois(x, a, log=FALSE), dpois(x, a, log=TRUE))
+                )
 
-    checkEquals(runit_ppois(x, a),
+    expect_equal(runit_ppois(x, a),
                 c(ppois(x, a, lower=TRUE, log=FALSE),  ppois(log(x), a, lower=TRUE, log=TRUE),
-                  ppois(x, a, lower=FALSE, log=FALSE), ppois(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.ppois")
+                  ppois(x, a, lower=FALSE, log=FALSE), ppois(log(x), a, lower=FALSE, log=TRUE))
+                  )
 
     x <- 1/x
-    checkEquals(runit_qpois(x, a),
+    expect_equal(runit_qpois(x, a),
                 c(qpois(x, a, lower=TRUE, log=FALSE),  qpois(log(x), a, lower=TRUE,  log=TRUE),
-                  qpois(x, a, lower=FALSE, log=FALSE), qpois(log(x), a, lower=FALSE, log=TRUE)),
-                msg = " rmath.qpois")
-}
+                  qpois(x, a, lower=FALSE, log=FALSE), qpois(log(x), a, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.weibull <- function() {
+test_that( "(dpq)weibull works", {
     x <- 2
     a <- 8
     b <- 0.25
-    checkEquals(runit_dweibull(x, a, b),
-                c(dweibull(x, a, b, log=FALSE), dweibull(x, a, b, log=TRUE)),
-                msg = " rmath.dweibull")
+    expect_equal(runit_dweibull(x, a, b),
+                c(dweibull(x, a, b, log=FALSE), dweibull(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pweibull(x, a, b),
+    expect_equal(runit_pweibull(x, a, b),
                 c(pweibull(x, a, b, lower=TRUE, log=FALSE),  pweibull(log(x), a, b, lower=TRUE, log=TRUE),
-                  pweibull(x, a, b, lower=FALSE, log=FALSE), pweibull(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pweibull")
+                  pweibull(x, a, b, lower=FALSE, log=FALSE), pweibull(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qweibull(x, a, b),
+    expect_equal(runit_qweibull(x, a, b),
                 c(qweibull(x, a, b, lower=TRUE, log=FALSE),  qweibull(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qweibull(x, a, b, lower=FALSE, log=FALSE), qweibull(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qweibull")
-}
+                  qweibull(x, a, b, lower=FALSE, log=FALSE), qweibull(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+} )
 
-
-test.rmath.logis <- function() {
+test_that( "(dpq)logis works", {
     x <- 2
     a <- 8
     b <- 0.25
-    checkEquals(runit_dlogis(x, a, b),
-                c(dlogis(x, a, b, log=FALSE), dlogis(x, a, b, log=TRUE)),
-                msg = " rmath.dlogis")
+    expect_equal(runit_dlogis(x, a, b),
+                c(dlogis(x, a, b, log=FALSE), dlogis(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_plogis(x, a, b),
+    expect_equal(runit_plogis(x, a, b),
                 c(plogis(x, a, b, lower=TRUE, log=FALSE),  plogis(log(x), a, b, lower=TRUE, log=TRUE),
-                  plogis(x, a, b, lower=FALSE, log=FALSE), plogis(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.plogis")
+                  plogis(x, a, b, lower=FALSE, log=FALSE), plogis(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qlogis(x, a, b),
+    expect_equal(runit_qlogis(x, a, b),
                 c(qlogis(x, a, b, lower=TRUE, log=FALSE),  qlogis(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qlogis(x, a, b, lower=FALSE, log=FALSE), qlogis(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qlogis")
-}
+                  qlogis(x, a, b, lower=FALSE, log=FALSE), qlogis(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.nbeta <- function() {
+test_that( "(dpq)nbeta works",{
     x <- 5
     a <- 10
     b <- 7
     c <- 8
-    checkEquals(runit_dnbeta(x, a, b, c),
-                c(dbeta(x, a, b, c, log=FALSE), dbeta(x, a, b, c, log=TRUE)),
-                msg = " rmath.dnbeta")
+    expect_equal(runit_dnbeta(x, a, b, c),
+                c(dbeta(x, a, b, c, log=FALSE), dbeta(x, a, b, c, log=TRUE))
+                )
 
-    checkEquals(runit_pnbeta(x, a, b, c),
+    expect_equal(runit_pnbeta(x, a, b, c),
                 c(pbeta(x, a, b, c, lower=TRUE, log=FALSE),  pbeta(log(x), a, b, c, lower=TRUE, log=TRUE),
-                  pbeta(x, a, b, c, lower=FALSE, log=FALSE), pbeta(log(x), a, b, c, lower=FALSE, log=TRUE)),
-                msg = " rmath.pnbeta")
+                  pbeta(x, a, b, c, lower=FALSE, log=FALSE), pbeta(log(x), a, b, c, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qnbeta(x, a, b, c),
+    expect_equal(runit_qnbeta(x, a, b, c),
                 c(qbeta(x, a, b, c, lower=TRUE, log=FALSE),  qbeta(log(x), a, b, c, lower=TRUE,  log=TRUE),
-                  qbeta(x, a, b, c, lower=FALSE, log=FALSE), qbeta(log(x), a, b, c, lower=FALSE, log=TRUE)),
-                msg = " rmath.qnbeta")
-}
+                  qbeta(x, a, b, c, lower=FALSE, log=FALSE), qbeta(log(x), a, b, c, lower=FALSE, log=TRUE))
+                  )
+})
 
-
-test.rmath.nf <- function() {
+test_that( "(dpq)nf works", {
     x <- 5
     a <- 10
     b <- 7
     c <- 8
-    checkEquals(runit_dnf(x, a, b, c),
-                c(df(x, a, b, c, log=FALSE), df(x, a, b, c, log=TRUE)),
-                msg = " rmath.dnf")
+    expect_equal(runit_dnf(x, a, b, c),
+                c(df(x, a, b, c, log=FALSE), df(x, a, b, c, log=TRUE))
+                )
 
-    checkEquals(runit_pnf(x, a, b, c),
+    expect_equal(runit_pnf(x, a, b, c),
                 c(pf(x, a, b, c, lower=TRUE, log=FALSE),  pf(log(x), a, b, c, lower=TRUE, log=TRUE),
-                  pf(x, a, b, c, lower=FALSE, log=FALSE), pf(log(x), a, b, c, lower=FALSE, log=TRUE)),
-                msg = " rmath.pnf")
+                  pf(x, a, b, c, lower=FALSE, log=FALSE), pf(log(x), a, b, c, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qnf(x, a, b, c),
+    expect_equal(runit_qnf(x, a, b, c),
                 c(qf(x, a, b, c, lower=TRUE, log=FALSE),  qf(log(x), a, b, c, lower=TRUE,  log=TRUE),
-                  qf(x, a, b, c, lower=FALSE, log=FALSE), qf(log(x), a, b, c, lower=FALSE, log=TRUE)),
-                msg = " rmath.qnf")
-}
+                  qf(x, a, b, c, lower=FALSE, log=FALSE), qf(log(x), a, b, c, lower=FALSE, log=TRUE))
+                  )
+})
 
-test.rmath.nt <- function() {
+test_that( "(dpq)nt works", {
     x <- 5
     a <- 10
     b <- 7
-    checkEquals(runit_dnt(x, a, b),
-                c(dt(x, a, b, log=FALSE), dt(x, a, b, log=TRUE)),
-                msg = " rmath.dnt")
+    expect_equal(runit_dnt(x, a, b),
+                c(dt(x, a, b, log=FALSE), dt(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pnt(x, a, b),
+    expect_equal(runit_pnt(x, a, b),
                 c(pt(x, a, b, lower=TRUE, log=FALSE),  pt(log(x), a, b, lower=TRUE, log=TRUE),
-                  pt(x, a, b, lower=FALSE, log=FALSE), pt(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pnt")
+                  pt(x, a, b, lower=FALSE, log=FALSE), pt(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qnt(x, a, b),
+    expect_equal(runit_qnt(x, a, b),
                 c(qt(x, a, b, lower=TRUE, log=FALSE),  qt(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qt(x, a, b, lower=FALSE, log=FALSE), qt(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qnt")
-}
+                  qt(x, a, b, lower=FALSE, log=FALSE), qt(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
-test.rmath.wilcox <- function() {
+test_that( "(dpq)wilcox works", {
     x <- 2
     a <- 4
     b <- 6
-    checkEquals(runit_dwilcox(x, a, b),
-                c(dwilcox(x, a, b, log=FALSE), dwilcox(x, a, b, log=TRUE)),
-                msg = " rmath.dwilcox")
+    expect_equal(runit_dwilcox(x, a, b),
+                c(dwilcox(x, a, b, log=FALSE), dwilcox(x, a, b, log=TRUE))
+                )
 
-    checkEquals(runit_pwilcox(x, a, b),
+    expect_equal(runit_pwilcox(x, a, b),
                 c(pwilcox(x, a, b, lower=TRUE, log=FALSE),  pwilcox(log(x), a, b, lower=TRUE, log=TRUE),
-                  pwilcox(x, a, b, lower=FALSE, log=FALSE), pwilcox(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.pwilcox")
+                  pwilcox(x, a, b, lower=FALSE, log=FALSE), pwilcox(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
 
     x <- x/a
-    checkEquals(runit_qwilcox(x, a, b),
+    expect_equal(runit_qwilcox(x, a, b),
                 c(qwilcox(x, a, b, lower=TRUE, log=FALSE),  qwilcox(log(x), a, b, lower=TRUE,  log=TRUE),
-                  qwilcox(x, a, b, lower=FALSE, log=FALSE), qwilcox(log(x), a, b, lower=FALSE, log=TRUE)),
-                msg = " rmath.qwilcox")
-}
+                  qwilcox(x, a, b, lower=FALSE, log=FALSE), qwilcox(log(x), a, b, lower=FALSE, log=TRUE))
+                  )
+})
 
