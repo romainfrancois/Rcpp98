@@ -1,120 +1,86 @@
+context( "Rcpp API" )
+sourceCpp( "cpp/misc.cpp" )
 
-.setUp <- Rcpp98:::unit_test_setup( "misc.cpp" )
-
-test.Symbol <- function(){
+test_that( "Symbol correctly handles various SEXP", {
 	res <- symbol_()
-	checkTrue( res[1L], msg = "Symbol creation - SYMSXP " )
-	checkTrue( res[2L], msg = "Symbol creation - CHARSXP " )
-	checkTrue( res[3L], msg = "Symbol creation - STRSXP " )
-	checkTrue( res[4L], msg = "Symbol creation - std::string " )
-}
+	expect_true( res[1L])
+	expect_true( res[2L])
+	expect_true( res[3L])
+	expect_true( res[4L])
 
-test.Symbol.notcompatible <- function(){
-	checkException( symbol_ctor(symbol_ctor), msg = "Symbol not compatible with function" )
-	checkException( symbol_ctor(asNamespace("Rcpp98")), msg = "Symbol not compatible with environment" )
-	checkException( symbol_ctor(1:10), msg = "Symbol not compatible with integer" )
-	checkException( symbol_ctor(TRUE), msg = "Symbol not compatible with logical" )
-	checkException( symbol_ctor(1.3), msg = "Symbol not compatible with numeric" )
-	checkException( symbol_ctor(as.raw(1) ), msg = "Symbol not compatible with raw" )
-}
+	expect_error( symbol_ctor(symbol_ctor))
+	expect_error( symbol_ctor(asNamespace("Rcpp98")))
+	expect_error( symbol_ctor(1:10))
+	expect_error( symbol_ctor(TRUE))
+	expect_error( symbol_ctor(1.3))
+	expect_error( symbol_ctor(as.raw(1) ))
+})
 
+test_that( "Argument can be used in List::create",{
+  expect_equal( Argument_(), list( x = 2L, y = 3L ) )
+})
 
-test.Argument <- function(){
-   checkEquals( Argument_(), list( x = 2L, y = 3L ) , msg = "Argument")
-}
+test_that( "Rcpp_eval propagates R errors", {
+  expect_error( evaluator_error())
+  expect_equal( sort(evaluator_ok(1:10)), 1:10)
+})
 
-test.Dimension.const <- function(){
-   checkEquals( Dimension_const( c(2L, 2L)) , 2L, msg = "testing const operator[]" )
-}
-
-test.evaluator.error <- function(){
-   checkException( evaluator_error(), msg = "Rcpp_eval( stop() )" )
-}
-
-test.evaluator.ok <- function(){
-	checkEquals( sort(evaluator_ok(1:10)), 1:10, msg = "Rcpp_eval running fine" )
-}
-
-test.exceptions <- function(){
+test_that( "exceptions are correctly mapped to conditions", {
 	can.demangle <- Rcpp98:::capabilities()[["demangling"]]
 
 	e <- tryCatch(  exceptions_(), "C++Error" = function(e) e )
-	checkTrue( "C++Error" %in% class(e), msg = "exception class C++Error" )
+	expect_true( "C++Error" %in% class(e))
 
 	if( can.demangle ){
-		checkTrue( "std::range_error" %in% class(e), msg = "exception class std::range_error" )
+		expect_true( "std::range_error" %in% class(e))
 	}
-	checkEquals( e$message, "boom", msg = "exception message" )
+	expect_equal( e$message, "boom")
 
 	if( can.demangle ){
 		# same with direct handler
 		e <- tryCatch(  exceptions_(), "std::range_error" = function(e) e )
-		checkTrue( "C++Error" %in% class(e), msg = "(direct handler) exception class C++Error" )
-		checkTrue( "std::range_error" %in% class(e), msg = "(direct handler) exception class std::range_error" )
-		checkEquals( e$message, "boom", msg = "(direct handler) exception message" )
+		expect_true( "C++Error" %in% class(e))
+		expect_true( "std::range_error" %in% class(e))
+		expect_equal( e$message, "boom")
 	}
 	f <- function(){
 		try( exceptions_(), silent = TRUE)
 		"hello world"
 	}
-	checkEquals( f(), "hello world", msg = "life continues after an exception" )
+	expect_equal( f(), "hello world")
+})
 
-}
+test_that( "has_iterator traits works", {
+  has_it <- has_iterator_()
+	expect_true( has_it[1L] )
+	expect_true( has_it[2L] )
+	expect_true( has_it[3L] )
+	expect_true( has_it[4L] )
+	expect_true( has_it[5L] )
 
-test.has.iterator <- function(){
+	expect_true( ! has_it[6L] )
+	expect_true( ! has_it[7L] )
+})
 
-    has_it <- has_iterator_()
-	checkTrue( has_it[1L] , msg = "has_iterator< std::vector<int> >" )
-	checkTrue( has_it[2L] , msg = "has_iterator< std::ist<int> >" )
-	checkTrue( has_it[3L] , msg = "has_iterator< std::deque<int> >" )
-	checkTrue( has_it[4L] , msg = "has_iterator< std::set<int> >" )
-	checkTrue( has_it[5L] , msg = "has_iterator< std::map<string,int> >" )
+test_that( "areMacrosDefined works", {
+  expect_true( Rcpp98:::areMacrosDefined( "__cplusplus" ) )    
+})
 
-	checkTrue( ! has_it[6L] , msg = "has_iterator< std::pair<string,int> >" )
-	checkTrue( ! has_it[7L] , msg = "Rcpp::Symbol" )
-
-}
-
-test.AreMacrosDefined <- function(){
-    checkTrue( Rcpp98:::areMacrosDefined( "__cplusplus" ) )    
-}
-    
-test.rcout <- function(){
-    ## define test string that is written to two files
-    teststr <- "First line.\nSecond line."
-
-    rcppfile <- tempfile()
-    rfile <- tempfile()
-    
-    ## write to test_rcpp.txt from Rcpp
-    test_rcout(rcppfile,  teststr )
-    
-    ## write to test_r.txt from R
-    cat( teststr, file=rfile, sep='\n' )
-    
-    ## compare whether the two files have the same data
-    checkEquals( readLines(rcppfile), readLines(rfile), msg="Rcout output")    
-}
-
-test.na_proxy <- function(){
-    checkEquals( 
+test_that( "Na_Proxy handles comparison to NA", {
+    expect_equal( 
         na_proxy(), 
         rep(c(TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE) , 2), 
         msg = "Na_Proxy NA == handling"
     )    
-}
+})
 
-test.StretchyList <- function(){
-    checkEquals( 
+test_that( "StrechyList correctly builds pairlists",
+    expect_equal( 
         stretchy_list(),
         pairlist( "foo", 1L, 3.2 )
     )
-}
-
-test.named_StretchyList <- function(){
-    checkEquals( 
+    expect_equal( 
         named_stretchy_list(),
         pairlist( a = "foo", b = 1L, c = 3.2 )
     )
-}
-
+})

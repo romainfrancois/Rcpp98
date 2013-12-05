@@ -1,69 +1,66 @@
-
-.setUp <- Rcpp98:::unit_test_setup( "Module.cpp" )
+context( "Rcpp API" )
+sourceCpp( "cpp/Module.cpp" )
     
-test.Module <- function(){
-    checkEquals( bar( 2L ), 4L )
-    checkEquals( foo( 2L, 10.0 ), 20.0 )
-    checkEquals( hello(), "hello" )
+test_that( "Module objects keep state in C++", {
+    expect_equal( bar( 2L ), 4L )
+    expect_equal( foo( 2L, 10.0 ), 20.0 )
+    expect_equal( hello(), "hello" )
     
     w <- new( World )
-    checkEquals( w$greet(), "hello" )
+    expect_equal( w$greet(), "hello" )
     w$set( "hello world" )
-    checkEquals( w$greet(), "hello world" )
+    expect_equal( w$greet(), "hello world" )
     w$set_ref( "hello world ref" )
-    checkEquals( w$greet(), "hello world ref" )
+    expect_equal( w$greet(), "hello world ref" )
     w$set_const_ref( "hello world const ref" )
-    checkEquals( w$greet(), "hello world const ref" )
+    expect_equal( w$greet(), "hello world const ref" )
     w$clear( )
-    checkEquals( w$greet(), "" )
-}
+    expect_equal( w$greet(), "" )
+})
 
-test.Module.exposed.class <- function(){
+test_that( "Module exposed classes can be used as parameters of functions", {
     test <- new( Test, 3.0 )
-    checkEquals( Test_get_x_const_ref(test), 3.0 )
-    checkEquals( Test_get_x_const_pointer(test), 3.0 )
-    checkEquals( Test_get_x_ref(test), 3.0 )
-    checkEquals( Test_get_x_pointer(test), 3.0 )
+    expect_equal( Test_get_x_const_ref(test), 3.0 )
+    expect_equal( Test_get_x_const_pointer(test), 3.0 )
+    expect_equal( Test_get_x_ref(test), 3.0 )
+    expect_equal( Test_get_x_pointer(test), 3.0 )
     
-    checkEquals( attr_Test_get_x_const_ref(test), 3.0 )
-    checkEquals( attr_Test_get_x_const_pointer(test), 3.0 )
-    checkEquals( attr_Test_get_x_ref(test), 3.0 )
-    checkEquals( attr_Test_get_x_pointer(test), 3.0 )
-}
+    expect_equal( attr_Test_get_x_const_ref(test), 3.0 )
+    expect_equal( attr_Test_get_x_const_pointer(test), 3.0 )
+    expect_equal( attr_Test_get_x_ref(test), 3.0 )
+    expect_equal( attr_Test_get_x_pointer(test), 3.0 )
+    
+    expect_equal( test_reference( seq(0,10) ), 11L )
+    expect_equal( test_const_reference( seq(0,10) ), 11L )
+    expect_equal( test_const( seq(0,10) ), 11L )
 
-test.Module.property <- function(){
+})
+
+test_that( "Module properties and fields work", {
     w <- new( Num )
-    checkEquals( w$x, 0.0 )
-    checkEquals( w$y, 0L )
+    expect_equal( w$x, 0.0 )
+    expect_equal( w$y, 0L )
 
     w$x <- 2.0
-    checkEquals( w$x, 2.0 )
+    expect_equal( w$x, 2.0 )
 
-    checkException( { w$y <- 3 } )
-}
+    expect_error( { w$y <- 3 } )
 
-test.Module.member <- function(){
     w <- new( Number )
-    checkEquals( w$x, 0.0 )
-    checkEquals( w$y, 0L )
+    expect_equal( w$x, 0.0 )
+    expect_equal( w$y, 0L )
 
     w$x <- 2.0
-    checkEquals( w$x, 2.0 )
+    expect_equal( w$x, 2.0 )
 
-    checkException( { w$y <- 3 } )
-}
+    expect_error( { w$y <- 3 } )
+})
 
-test.Module.Constructor <- function() {
+test_that( "Module classes constructors work",{
     r <- new( Randomizer, 10.0, 20.0 )
     set.seed(123)
     x10 <- runif(10, 10.0, 20.0)
     set.seed(123)
-    checkEquals(r$get(10), x10)
-}
-
-test.Module.flexible.semantics <- function( ){
-    checkEquals( test_reference( seq(0,10) ), 11L )
-    checkEquals( test_const_reference( seq(0,10) ), 11L )
-    checkEquals( test_const( seq(0,10) ), 11L )
-}
+    expect_equal(r$get(10), x10)
+})
 

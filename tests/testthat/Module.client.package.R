@@ -1,5 +1,7 @@
-## ## added test for 'testRcppClass' example of extending C++ classes via R
-test.Class.package <- function( ){
+
+context( "Modules" )
+
+test_that( "R classes can extend C++ classes", {
 
     td <- tempfile()
     cwd <- getwd()
@@ -28,5 +30,5 @@ test.Class.package <- function( ){
     checkEquals( bar(2), 4)
     checkEquals( foo(2,3), 6)
 
-}
+})
 
