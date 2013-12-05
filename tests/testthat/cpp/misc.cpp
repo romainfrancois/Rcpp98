@@ -95,3 +95,9 @@ StretchyList named_stretchy_list(){
     return out;
 }
 
+// [[Rcpp::export]]
+std::string runit_Reference_getId(Reference obj) {
+    std::string txt = obj.field("id");
+    return txt;
+}
+

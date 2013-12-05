@@ -84,3 +84,16 @@ test_that( "StrechyList correctly builds pairlists",
         pairlist( a = "foo", b = 1L, c = 3.2 )
     )
 })
+
+test_that( "Reference works", {
+    Instrument <- setRefClass(
+       Class="Instrument",
+       fields=list("id"="character", "description"="character")
+    )
+    Instrument$accessors(c("id", "description"))
+    
+    instrument <- Instrument$new(id="AAPL", description="Apple")
+    
+    expect_equal( runit_Reference_getId(instrument), "AAPL" )
+})
+
