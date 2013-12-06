@@ -2,16 +2,16 @@
 context( "Conversion from SEXP to C++ type with as<>" )
 sourceCpp( "cpp/as.cpp" )
 
-test_that( "as<> works for pimitive types", {
+test_that( "as<> works for primitive types", {
   expect_equal( as_int(10)         , 10L)
   expect_equal( as_int(10L)        , 10L)
   expect_equal( as_int(as.raw(10L)), 10L)
   expect_equal( as_int(TRUE)       , 1L )
 
-  expect_equal(as_double(10), 10.0)
-  expect_equal(as_double(10L), 10.0)
-  expect_equal(as_double(as.raw(10L)))
-  expect_equal(as_double(TRUE), 1.0)
+  expect_equal( as_double(10), 10.0)
+  expect_equal( as_double(10L), 10.0)
+  expect_equal( as_double(as.raw(10L)), 10.0)
+  expect_equal( as_double(TRUE), 1.0)
 
   expect_equal( as_raw(10), as.raw(10))
   expect_equal( as_raw(10L), as.raw(10))
