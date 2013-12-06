@@ -379,7 +379,7 @@ test_that( "diag works", {
 })
 
 test_that( "as_vector works", {
-    res <- runit_asvector( 1:4, 1:5, diag( 1:5 ) )
+    res <- runit_asvector( diag( 1:5 ), 1:4, 1:5 )
     expect_equal( res[[1]], as.vector( diag(1:5) ) )
     expect_equal( res[[2]], as.vector( outer( 1:4, 1:5, "+" ) ) )
 })

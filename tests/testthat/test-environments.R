@@ -110,7 +110,7 @@ test_that( "Environment handles SEXP", {
 
 	expect_equal( runit_env_SEXP( ".GlobalEnv" ), globalenv())
 	expect_equal( runit_env_SEXP( "package:base" ), baseenv())
-	expect_equal( runit_env_SEXP( "package:Rcpp" ), as.environment("package:Rcpp") )
+	expect_equal( runit_env_SEXP( "package:Rcpp98" ), as.environment("package:Rcpp98") )
 
 	expect_equal( runit_env_SEXP(1L), globalenv())
   

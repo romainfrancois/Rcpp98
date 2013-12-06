@@ -51,7 +51,7 @@ test_that( "(dpq)norm gives correct results", {
                      )
                      )
     ## Borrowed from R's d-p-q-r-tests.R and Wichura (1988)
-    expect_equalNumeric(runit_qnorm_prob(c( 0.25,  .001,	 1e-20))$lower,
+    expect_equal(runit_qnorm_prob(c( 0.25,  .001,	 1e-20))$lower,
                        c(-0.6744897501960817, -3.090232306167814, -9.262340089798408),
                        tol = 1e-15)
 
@@ -60,8 +60,8 @@ test_that( "(dpq)norm gives correct results", {
                      upper = c(Inf, -Inf, NaN)
                      )
                      )
-    expect_equalNumeric(runit_qnorm_log(-1e5)$lower, -447.1974945)
-})
+    expect_equal(runit_qnorm_log(-1e5)$lower, -447.1974945)
+})   
 
 test_that( "(dpq)unif is correct", {
     x <- 0.25
@@ -173,7 +173,7 @@ test_that( "(dpq)beta is correct", {
 
     a <- 0.5; b <- 2.5
     v <- qbeta(seq(0.0, 1.0, by=0.1), a, b)
-    expect_equal(runit_pbeta(v, a, b),
+    expect_equal(runit_pbeta_2(v, a, b),
                 list(lowerNoLog = pbeta(v, a, b),
                      lowerLog   = pbeta(v, a, b,              log=TRUE),
                      upperNoLog = pbeta(v, a, b, lower=FALSE),
@@ -184,8 +184,8 @@ test_that( "(dpq)beta is correct", {
     x <- c(.01, .10, .25, .40, .55, .71, .98)
     pbval <- c(-0.04605755624088, -0.3182809860569, -0.7503593555585,
                -1.241555830932, -1.851527837938, -2.76044482378, -8.149862739881)
-    expect_equalNumeric(runit_pbeta_2(x, 0.8, 2)$upperLog, pbval)
-    expect_equalNumeric(runit_pbeta_2(1-x, 2, 0.8)$lowerLog, pbval)
+    expect_equal(runit_pbeta_2(x, 0.8, 2)$upperLog, pbval)
+    expect_equal(runit_pbeta_2(1-x, 2, 0.8)$lowerLog, pbval)
 
 })
 
@@ -647,7 +647,7 @@ test_that( "(dpq)nt works", {
                   )
 
 	v <- seq(0.0, 1.0, by=0.1)
-    expect_equal(runit_pnt(v),
+    expect_equal(runit_pnt_2(v),
                 list(lowerNoLog = pt(v, 5, ncp=7),
                      lowerLog   = pt(v, 5, ncp=7,              log=TRUE),
                      upperNoLog = pt(v, 5, ncp=7, lower=FALSE),

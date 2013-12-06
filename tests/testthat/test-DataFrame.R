@@ -1,7 +1,6 @@
 
 context( "data frame manipulation with Rcpp::DataFrame" )
 sourceCpp( "cpp/DataFrame.cpp" )
-setClass("track", representation(x="data.frame", y = "function"))
     
 test_that( "DataFrame can be constructed from a SEXP", {
     DF <- data.frame(a=1:3, b=c("a","b","c"))
@@ -31,6 +30,7 @@ test_that( "DataFrame::create works", {
 })
 
 test_that( "DataFrame can be created from proxies", {
+    setClass("track", representation(x="data.frame", y = "function"), where = environment())
     df <- data.frame( x = 1:10, y = 1:10 )
     tr1 <- new( "track", x = df, y = rnorm )
     expect_true( identical( SlotProxy(tr1, "x"), df ))

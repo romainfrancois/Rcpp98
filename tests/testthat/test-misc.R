@@ -26,23 +26,17 @@ test_that( "Rcpp_eval propagates R errors", {
 })
 
 test_that( "exceptions are correctly mapped to conditions", {
-	can.demangle <- Rcpp98:::capabilities()[["demangling"]]
-
 	e <- tryCatch(  exceptions_(), "C++Error" = function(e) e )
 	expect_true( "C++Error" %in% class(e))
 
-	if( can.demangle ){
-		expect_true( "std::range_error" %in% class(e))
-	}
+	expect_true( "std::range_error" %in% class(e))
 	expect_equal( e$message, "boom")
 
-	if( can.demangle ){
-		# same with direct handler
-		e <- tryCatch(  exceptions_(), "std::range_error" = function(e) e )
-		expect_true( "C++Error" %in% class(e))
-		expect_true( "std::range_error" %in% class(e))
-		expect_equal( e$message, "boom")
-	}
+	# same with direct handler
+	e <- tryCatch(  exceptions_(), "std::range_error" = function(e) e )
+	expect_true( "C++Error" %in% class(e))
+	expect_true( "std::range_error" %in% class(e))
+	expect_equal( e$message, "boom")
 	f <- function(){
 		try( exceptions_(), silent = TRUE)
 		"hello world"
@@ -87,7 +81,8 @@ test_that( "StrechyList correctly builds pairlists", {
 test_that( "Reference works", {
     Instrument <- setRefClass(
        Class="Instrument",
-       fields=list("id"="character", "description"="character")
+       fields=list("id"="character", "description"="character"), 
+       where = environment()
     )
     Instrument$accessors(c("id", "description"))
     
@@ -96,55 +91,9 @@ test_that( "Reference works", {
     expect_equal( runit_Reference_getId(instrument), "AAPL" )
 })
 
-test_that( "S4 works", {
-	setClass("track", representation(x="numeric", y="numeric"))
-	tr <- new( "track", x = 2, y = 2 )
-	expect_equal( 
-	    S4_methods(tr),
-		list( TRUE, TRUE, FALSE, 2.0, 2.0 )
-	)
-
-	S4_getslots( tr )
-	expect_equal( tr@x, 10.0 )
-	expect_equal( tr@y, 20.0 )
-
-	expect_error( S4_setslots( tr ))
-	expect_error( S4_setslots_2( tr ))
-
-	tr <- new( "track", x = 2, y = 3 )
-	expect_equal( S4_get_slot_x( tr ), 2)
-	expect_error( S4_get_slot_x( list( x = 2, y = 3 ) ))
-	expect_error( S4_get_slot_x( structure( list( x = 2, y = 3 ), class = "track" ) ))
-
-	tr <- S4_ctor( "track" )
-	expect_true( inherits( tr, "track" ) )
-	expect_equal( tr@x, numeric(0) )
-	expect_equal( tr@y, numeric(0) )
-	expect_error( S4_ctor( "someclassthatdoesnotexist" ) )
-	
-	setClass( "Foo", contains = "character", representation( x = "numeric" ) )
-	foo <- S4_dotdata( new( "Foo", "bla", x = 10 ) )
-	expect_equal( as.character( foo) , "foooo" )
-	
-})
-
-test_that( "S4 correctly defines is", {
-	setClass("track", representation(x="numeric", y="numeric"))
-	setClass("trackCurve", representation(smooth = "numeric"), contains = "track")
-
-	tr1 <- new( "track", x = 2, y = 3 )
-	tr2 <- new( "trackCurve", x = 2, y = 3, smooth = 5 )
-
-	expect_true( S4_is_track( tr1 ))
-	expect_true( S4_is_track( tr2 ))
-
-	expect_true( !S4_is_trackCurve( tr1 ))
-	expect_true( S4_is_trackCurve( tr2 ))
-})
-
 test_that( "Vector can be constructed from Proxies", {
-	setClass("track", representation(x="numeric", y="numeric"))
-	setClass("trackCurve", representation(smooth = "numeric"), contains = "track")
+	setClass("track", representation(x="numeric", y="numeric"), where = environment() )
+	setClass("trackCurve", representation(smooth = "numeric"), contains = "track", where = environment() )
 
 	tr1 <- new( "track", x = 2, y = 3 )
 	expect_equal( S4_get_slot_x(tr1), 2 )

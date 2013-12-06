@@ -116,7 +116,6 @@ test_that( ".isNULL works as expected", {
 	expect_true( !isNULL(1.0))
 	expect_true( !isNULL(as.raw(1)))
 	expect_true( !isNULL(letters))
-	expect_true( !isNULL(test.RObject.isNULL))
 	expect_true( !isNULL(.GlobalEnv))
 	expect_true( isNULL(NULL))
 })

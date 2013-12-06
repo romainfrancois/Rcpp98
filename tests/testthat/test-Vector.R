@@ -17,7 +17,7 @@ test_that( "Vector(int) constructor work", {
 })
    
 test_that( "Vector( int, init) works", {
-    expect_equal( fun(), c(4L,4L))
+    expect_equal( IntegerVector_int_init(), c(4L,4L))
       
     x <- 1:10
     res <- List_rep_ctor(x)
@@ -36,7 +36,7 @@ test_that( "Vector(SEXP) works", {
     expect_equal( complex_REALSXP(vv), (3+0i)*vv)
     expect_equal( integer_INTSXP(0:9), 2*0:9)
     expect_equal( numeric_REALSXP(as.numeric(0:9)), 2*0:9)
-    expect_equal( fun(list(1,2)), list(1,2))
+    expect_equal( list_VECSXP_(list(1,2)), list(1,2))
     expect_equal( character_STRSXP_(letters), paste(letters,collapse="" ))
 })
 
@@ -338,6 +338,6 @@ test_that( "std::vector can be used as parameters in attributes", {
 
 test_that( "CharacterVector const proxy work", {
     expect_equal( character_vector_const_proxy( "fooo" ), "fooo")
-    expect_equal( CharacterVector_test_const_proxy, letters )
+    expect_equal( CharacterVector_test_const_proxy(letters), letters )
 })
 
