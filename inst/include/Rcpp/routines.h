@@ -18,7 +18,7 @@
 #ifndef RCPP_ROUTINE_H
 #define RCPP_ROUTINE_H
 
-#if defined(COMPILING_RCPP)
+#if defined(COMPILING_RCPP98)
 
 // the idea is that this file should be generated automatically by Rcpp::register
 
