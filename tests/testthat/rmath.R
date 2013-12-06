@@ -1,7 +1,6 @@
 context( "R math" )
 sourceCpp( "cpp/rmath.cpp" )
 
-
 test_that( "(dpq)norm gives correct results", {
     x <- 0.25
     a <- 1.25

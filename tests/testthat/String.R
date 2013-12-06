@@ -1,29 +1,23 @@
+context( "String" )
+sourceCpp( "cpp/String.cpp" )
 
-.setUp <- Rcpp98:::unit_test_setup( "String.cpp" )
+test_that( "replace functions work", {
+  expect_equal( String_replace_all("foobar", "o", "*"), "f**bar")
+  expect_equal( String_replace_first("foobar", "o", "*"), "f*obar")
+  expect_equal( String_replace_last("foobar", "o", "*"), "fo*bar")
 
-test.replace_all <- function(){
-    checkEquals( String_replace_all("foobar", "o", "*"), "f**bar")
-}
-test.replace_first <- function(){
-    checkEquals( String_replace_first("foobar", "o", "*"), "f*obar")
-}
-test.replace_last <- function(){
-    checkEquals( String_replace_last("foobar", "o", "*"), "fo*bar")
-}
-
-test.String.sapply <- function(){
-    res <- test_sapply_string( "foobar", c("o", "a" ), c("*", "!" ) )
-    checkEquals( res, "f**b!r" )    
+  res <- test_sapply_string( "foobar", c("o", "a" ), c("*", "!" ) )
+  expect_equal( res, "f**b!r" )    
 }
 
-test.compare.Strings <- function(){
-    res <- test_compare_Strings( "aaa", "aab" )
-    target <- list( 
-        "a  < b" = TRUE, 
-        "a  > b" = FALSE,  
-        "a == b" = FALSE,
-        "a == a" = TRUE
-    )
-    checkEquals( res, target )
-}
-  
+test_that( "String comparison works", {
+  res <- test_compare_Strings( "aaa", "aab" )
+  target <- list( 
+    "a  < b" = TRUE, 
+    "a  > b" = FALSE,  
+    "a == b" = FALSE,
+    "a == a" = TRUE
+  )
+  expect_equal( res, target )
+})
+                                    
