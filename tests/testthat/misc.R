@@ -156,3 +156,26 @@ test_that( "Vector can be constructed from Proxies", {
 
 })
 
+test_that( "NA is correctly handled", {
+    expect_equal(
+        plus_REALSXP(),
+        list(NA_real_,NA_real_,NA_real_)
+        )
+    expect_equal(
+        times_REALSXP(),
+        list(NA_real_,NA_real_,NA_real_)
+        )
+    expect_equal(
+        divides_REALSXP(),
+        list(NA_real_,NA_real_,NA_real_)
+        )
+    expect_equal(
+        minus_REALSXP(),
+        list(NA_real_,NA_real_,NA_real_)
+        )
+    expect_equal(
+        functions_REALSXP(),
+        list( rep(NA_real_, 20L), rep(NA_real_, 6L) )
+        )
+})
+
