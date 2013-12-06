@@ -73,14 +73,14 @@ test_that( "Na_Proxy handles comparison to NA", {
     )    
 })
 
-test_that( "StrechyList correctly builds pairlists",
+test_that( "StrechyList correctly builds pairlists", {
     expect_equal( 
-        stretchy_list(),
-        pairlist( "foo", 1L, 3.2 )
+      stretchy_list(),
+      pairlist( "foo", 1L, 3.2 ) 
     )
-    expect_equal( 
-        named_stretchy_list(),
-        pairlist( a = "foo", b = 1L, c = 3.2 )
+    expect_equal(
+      named_stretchy_list(),
+      pairlist( a = "foo", b = 1L, c = 3.2 )
     )
 })
 

@@ -309,7 +309,7 @@ test_that( "List proxy can expand to bool and int", {
     expect_equal( List_extract(list(FALSE, -4L)), list(FALSE,-4L) )
 })
 
-test_that( "factors can be coerced to CharacterVector", 
+test_that( "factors can be coerced to CharacterVector", {
     x <- as.factor( c("c3", "c2", "c1") )
     y <- factors(x)
     expect_equal( y, as.character(x) )

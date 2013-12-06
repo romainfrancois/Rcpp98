@@ -375,8 +375,10 @@ NumericVector runit_qwilcox( double x, double a, double b ){
                                           R::qwilcox(x, a, b, 0, 0), R::qwilcox(log(x), a, b, 0, 1));
 }
 
+
+
 // [[Rcpp::export]]
-List runit_dbeta(NumericVector xx, double aa, double bb){
+List runit_dbeta_2(NumericVector xx, double aa, double bb){
     return List::create(
         _["NoLog"] = dbeta( xx, aa, bb),
         _["Log"]	 = dbeta( xx, aa, bb, true )
@@ -384,7 +386,7 @@ List runit_dbeta(NumericVector xx, double aa, double bb){
 }
 
 // [[Rcpp::export]]
-List runit_dbinom( IntegerVector xx ){
+List runit_dbinom_2( IntegerVector xx ){
     return List::create(
         _["false"] = dbinom( xx, 10, .5),
         _["true"]	 = dbinom( xx, 10, .5, true )
@@ -392,7 +394,7 @@ List runit_dbinom( IntegerVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_dunif( NumericVector xx){
+List runit_dunif_2( NumericVector xx){
     return List::create(
         _["NoLog_noMin_noMax"] = dunif( xx ),
         _["NoLog_noMax"] = dunif( xx, 0.0 ),
@@ -404,7 +406,7 @@ List runit_dunif( NumericVector xx){
 }
 
 // [[Rcpp::export]]
-List runit_dgamma( NumericVector xx ){
+List runit_dgamma_2( NumericVector xx ){
     return List::create(
         _["NoLog"] = dgamma( xx, 1.0, 1.0),
         _["Log"]	 = dgamma( xx, 1.0, 1.0, true ),
@@ -413,7 +415,7 @@ List runit_dgamma( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_dpois( IntegerVector xx ){
+List runit_dpois_2( IntegerVector xx ){
     return List::create(
         _["false"] = dpois( xx, .5 ),
         _["true"]	 = dpois( xx, .5 , true)
@@ -421,7 +423,7 @@ List runit_dpois( IntegerVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_dnorm( NumericVector xx ){
+List runit_dnorm_2( NumericVector xx ){
     return List::create(
         _["false_noMean_noSd"] = dnorm( xx ),
         _["false_noSd"] = dnorm( xx, 0.0  ),
@@ -433,14 +435,14 @@ List runit_dnorm( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_dt( NumericVector xx){
+List runit_dt_2( NumericVector xx){
     return List::create(
         _["false"] = dt( xx, 5),
         _["true"]	 = dt( xx, 5, true ));
 }
 
 // [[Rcpp::export]]
-List runit_pbeta( NumericVector xx, double aa, double bb ){
+List runit_pbeta_2( NumericVector xx, double aa, double bb ){
     return List::create(
         _["lowerNoLog"] = pbeta( xx, aa, bb),
         _["lowerLog"]	  = pbeta( xx, aa, bb, true, true),
@@ -450,7 +452,7 @@ List runit_pbeta( NumericVector xx, double aa, double bb ){
 }
 
 // [[Rcpp::export]]
-List runit_pbinom( NumericVector xx, int n, double p){
+List runit_pbinom_2( NumericVector xx, int n, double p){
     return List::create(
         _["lowerNoLog"] = pbinom(xx, n, p ),
         _["lowerLog"]	  = pbinom(xx, n, p, true, true ),
@@ -460,7 +462,7 @@ List runit_pbinom( NumericVector xx, int n, double p){
 }
 
 // [[Rcpp::export]]
-List runit_pcauchy( NumericVector xx, double loc, double scl){
+List runit_pcauchy_2( NumericVector xx, double loc, double scl){
     return List::create(
         _["lowerNoLog"] = pcauchy(xx, loc, scl ),
         _["lowerLog"]	  = pcauchy(xx, loc, scl, true, true ),
@@ -470,7 +472,7 @@ List runit_pcauchy( NumericVector xx, double loc, double scl){
 }
 
 // [[Rcpp::export]]
-List runit_punif( NumericVector xx ){
+List runit_punif_2( NumericVector xx ){
     return List::create(
         _["lowerNoLog"] = punif( xx, 0.0, 1.0 ),
         _["lowerLog"]   = punif( xx, 0.0, 1.0, true, true ),
@@ -480,7 +482,7 @@ List runit_punif( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_pgamma( NumericVector xx ){
+List runit_pgamma_2( NumericVector xx ){
     return List::create(
         _["lowerNoLog"] = pgamma( xx, 2.0, 1.0 ),
         _["lowerLog"]	  = pgamma( xx, 2.0, 1.0, true, true ),
@@ -490,7 +492,7 @@ List runit_pgamma( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_pnf( NumericVector xx ){
+List runit_pnf_2( NumericVector xx ){
     return List::create(
         _["lowerNoLog"] = pnf( xx, 6.0, 8.0, 2.5, true ),
         _["lowerLog"]	  = pnf( xx, 6.0, 8.0, 2.5, true, true ),
@@ -500,7 +502,7 @@ List runit_pnf( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_pf( NumericVector xx ){
+List runit_pf_2( NumericVector xx ){
     return List::create(
         _["lowerNoLog"] = pf( xx, 6.0, 8.0 ),
         _["lowerLog"]	  = pf( xx, 6.0, 8.0, true, true ),
@@ -510,7 +512,7 @@ List runit_pf( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_pnchisq( NumericVector xx ){
+List runit_pnchisq_2( NumericVector xx ){
     return List::create(
         _["lowerNoLog"] = pnchisq( xx, 6.0, 2.5, true ),
         _["lowerLog"]	  = pnchisq( xx, 6.0, 2.5, true, true ),
@@ -520,7 +522,7 @@ List runit_pnchisq( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_pchisq( NumericVector xx){
+List runit_pchisq_2( NumericVector xx){
     return List::create(
         _["lowerNoLog"] = pchisq( xx, 6.0 ),
         _["lowerLog"]	  = pchisq( xx, 6.0, true, true ),
@@ -530,7 +532,7 @@ List runit_pchisq( NumericVector xx){
 }
 
 // [[Rcpp::export]]
-List runit_pnorm( NumericVector xx ){
+List runit_pnorm_2( NumericVector xx ){
     return List::create(
         _["lowerNoLog"] = pnorm( xx, 0.0, 1.0 ),
         _["lowerLog"]	  = pnorm( xx, 0.0, 1.0, true, true ),
@@ -540,7 +542,7 @@ List runit_pnorm( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-List runit_ppois( NumericVector xx){
+List runit_ppois_2( NumericVector xx){
     return List::create(
         _["lowerNoLog"] = ppois( xx, 0.5 ),
         _["lowerLog"]	  = ppois( xx, 0.5, true, true ),
@@ -550,7 +552,7 @@ List runit_ppois( NumericVector xx){
 }
 
 // [[Rcpp::export]]
-List runit_pt(NumericVector xx){
+List runit_pt_2(NumericVector xx){
     return List::create(_["lowerNoLog"] = pt( xx, 5 /*true,    false*/),
 			_["lowerLog"]   = pt( xx, 5,  true,    true),
 			_["upperNoLog"] = pt( xx, 5,  false /*,false*/),
@@ -558,7 +560,7 @@ List runit_pt(NumericVector xx){
 }
 
 // [[Rcpp::export]]
-List runit_pnt(NumericVector xx){
+List runit_pnt_2(NumericVector xx){
     return List::create(_["lowerNoLog"] = pnt( xx, 5, 7  /*true,    false*/),
 			_["lowerLog"]   = pnt( xx, 5, 7,   true,    true),
 			_["upperNoLog"] = pnt( xx, 5, 7,   false /*,false*/),
@@ -603,6 +605,6 @@ List runit_qpois_prob( NumericVector xx ){
 }
 
 // [[Rcpp::export]]
-NumericVector runit_qt( NumericVector xx, double d, bool lt, bool lg ){
+NumericVector runit_qt_2( NumericVector xx, double d, bool lt, bool lg ){
     return qt( xx, d, lt, lg);
 }

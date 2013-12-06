@@ -8,7 +8,7 @@ test_that( "replace functions work", {
 
   res <- test_sapply_string( "foobar", c("o", "a" ), c("*", "!" ) )
   expect_equal( res, "f**b!r" )    
-}
+})
 
 test_that( "String comparison works", {
   res <- test_compare_Strings( "aaa", "aab" )

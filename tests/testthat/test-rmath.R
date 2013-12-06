@@ -20,7 +20,7 @@ test_that( "(dpq)norm gives correct results", {
                   )
 
     v <- seq(0.0, 1.0, by=0.1)
-    expect_equal(runit_dnorm(v),
+    expect_equal(runit_dnorm_2(v),
                 list( false_noMean_noSd = dnorm(v),
                       false_noSd = dnorm(v, 0.0),
                       false = dnorm(v, 0.0, 1.0),
@@ -29,7 +29,7 @@ test_that( "(dpq)norm gives correct results", {
                       true_noMean_noSd = dnorm(v, log=TRUE )
                 ))
     v <- qnorm(seq(0.0, 1.0, by=0.1))
-    expect_equal(runit_pnorm(v),
+    expect_equal(runit_pnorm_2(v),
                 list(lowerNoLog = pnorm(v),
                      lowerLog   = pnorm(v, log=TRUE ),
                      upperNoLog = pnorm(v, lower=FALSE),
@@ -39,9 +39,9 @@ test_that( "(dpq)norm gives correct results", {
     ## Borrowed from R's d-p-q-r-tests.R
     z <- c(-Inf,Inf,NA,NaN, rt(1000, df=2))
     z.ok <- z > -37.5 | !is.finite(z)
-    pz <- runit_pnorm(z)
+    pz <- runit_pnorm_2(z)
     expect_equal(pz$lowerNoLog, 1 - pz$upperNoLog)
-    expect_equal(pz$lowerNoLog, runit_pnorm(-z)$upperNoLog)
+    expect_equal(pz$lowerNoLog, runit_pnorm_2(-z)$upperNoLog)
     expect_equal(log(pz$lowerNoLog[z.ok]), pz$lowerLog[z.ok])
     ## FIXME: Add tests that use non-default mu and sigma
 
@@ -81,7 +81,7 @@ test_that( "(dpq)unif is correct", {
                   )
 
     vv <- seq(0, 1, by = 0.1)
-    expect_equal(runit_dunif(vv),
+    expect_equal(runit_dunif_2(vv),
                 list(
                     NoLog_noMin_noMax = dunif(vv),
                     NoLog_noMax = dunif(vv, 0),
@@ -91,7 +91,7 @@ test_that( "(dpq)unif is correct", {
                      #,Log_noMin_noMax   = dunif(vv, log=TRUE)  ## wrong answer
                      ))
     v <- qunif(seq(0.0, 1.0, by=0.1))
-    expect_equal(runit_punif(v),
+    expect_equal(runit_punif_2(v),
                 list(lowerNoLog = punif(v),
                      lowerLog   = punif(v, log=TRUE ),
                      upperNoLog = punif(v, lower=FALSE),
@@ -127,14 +127,14 @@ test_that( "(dpq)gamma is correct", {
                   )
 
     v <- 1:4
-    expect_equal(runit_dgamma(v),
+    expect_equal(runit_dgamma_2(v),
                 list( NoLog = dgamma(v, 1.0, 1.0),
                       Log = dgamma(v, 1.0, 1.0, log = TRUE ),
                       Log_noRate = dgamma(v, 1.0, log = TRUE )
                 ))
 
     v <- (1:9)/10
-    expect_equal(runit_pgamma(v),
+    expect_equal(runit_pgamma_2(v),
                 list(lowerNoLog = pgamma(v, shape = 2.0),
                      lowerLog   = pgamma(v, shape = 2.0, log=TRUE ),
                      upperNoLog = pgamma(v, shape = 2.0, lower=FALSE),
@@ -142,7 +142,7 @@ test_that( "(dpq)gamma is correct", {
                      )
                      )
 
-}
+})
 
 test_that( "(dpq)beta is correct", {
     x <- 0.25
@@ -164,7 +164,7 @@ test_that( "(dpq)beta is correct", {
                   
     vv <- seq(0, 1, by = 0.1)
     a <- 0.5; b <- 2.5
-    expect_equal(runit_dbeta(vv, a, b),
+    expect_equal(runit_dbeta_2(vv, a, b),
                 list(
                      NoLog = dbeta(vv, a, b),
                      Log   = dbeta(vv, a, b, log=TRUE)
@@ -184,8 +184,8 @@ test_that( "(dpq)beta is correct", {
     x <- c(.01, .10, .25, .40, .55, .71, .98)
     pbval <- c(-0.04605755624088, -0.3182809860569, -0.7503593555585,
                -1.241555830932, -1.851527837938, -2.76044482378, -8.149862739881)
-    expect_equalNumeric(runit_pbeta(x, 0.8, 2)$upperLog, pbval)
-    expect_equalNumeric(runit_pbeta(1-x, 2, 0.8)$lowerLog, pbval)
+    expect_equalNumeric(runit_pbeta_2(x, 0.8, 2)$upperLog, pbval)
+    expect_equalNumeric(runit_pbeta_2(1-x, 2, 0.8)$lowerLog, pbval)
 
 })
 
@@ -208,7 +208,7 @@ test_that( "(dpq)lnorm is correct", {
                   )
 })
 
-test_that( "(dpq)chisq is correct", 
+test_that( "(dpq)chisq is correct", { 
     x <- 0.25
     a <- 0.8
     expect_equal(runit_dchisq(x, a),
@@ -226,7 +226,7 @@ test_that( "(dpq)chisq is correct",
                   )
 
     v <- (1:9)/10
-    expect_equal(runit_pchisq(v),
+    expect_equal(runit_pchisq_2(v),
                 list(lowerNoLog = pchisq(v, 6, lower=TRUE, log=FALSE),
                      lowerLog   = pchisq(v, 6, log=TRUE ),
                      upperNoLog = pchisq(v, 6, lower=FALSE),
@@ -255,7 +255,7 @@ test_that( "(dpq)nchisq is correct", {
                   )
 
     v <- (1:9)/10
-    expect_equal(runit_pnchisq(v),
+    expect_equal(runit_pnchisq_2(v),
                 list(lowerNoLog = pchisq(v, 6, ncp=2.5, lower=TRUE, log=FALSE),
                      lowerLog   = pchisq(v, 6, ncp=2.5, log=TRUE ),
                      upperNoLog = pchisq(v, 6, ncp=2.5, lower=FALSE),
@@ -283,7 +283,7 @@ test_that( "(dpq)f is correct", {
                   )
 
     v <- (1:9)/10
-    expect_equal(runit_pf(v),
+    expect_equal(runit_pf_2(v),
                 list(lowerNoLog = pf(v, 6, 8, lower=TRUE, log=FALSE),
                      lowerLog   = pf(v, 6, 8, log=TRUE ),
                      upperNoLog = pf(v, 6, 8, lower=FALSE),
@@ -310,31 +310,31 @@ test_that( "(dpq)t is correct", {
                   )
 
 	v <- seq(0.0, 1.0, by=0.1)
-    expect_equal(runit_dt(v),
+    expect_equal(runit_dt_2(v),
                 list( false = dt(v, 5),
                       true = dt(v, 5, log=TRUE ) # NB: need log=TRUE here
                 ))
 	v <- seq(0.0, 1.0, by=0.1)
-    expect_equal(runit_pt(v),
+    expect_equal(runit_pt_2(v),
                 list(lowerNoLog = pt(v, 5),
                      lowerLog   = pt(v, 5,              log=TRUE),
                      upperNoLog = pt(v, 5, lower=FALSE),
                      upperLog   = pt(v, 5, lower=FALSE, log=TRUE) )
                      )
     v <- seq(0.05, 0.95, by=0.05)
-    ( x1 <- runit_qt(v, 5, FALSE, FALSE) )
+    ( x1 <- runit_qt_2(v, 5, FALSE, FALSE) )
     ( x2 <- qt(v, df=5, lower=FALSE, log=FALSE) )
     expect_equal(x1, x2)
 
-    ( x1 <- runit_qt(v, 5, TRUE, FALSE) )
+    ( x1 <- runit_qt_2(v, 5, TRUE, FALSE) )
     ( x2 <- qt(v, df=5, lower=TRUE, log=FALSE) )
     expect_equal(x1, x2)
 
-	  ( x1 <- runit_qt(-v, 5, FALSE, TRUE) )
+	  ( x1 <- runit_qt_2(-v, 5, FALSE, TRUE) )
     ( x2 <- qt(-v, df=5, lower=FALSE, log=TRUE) )
     expect_equal(x1, x2)
 
-    ( x1 <- runit_qt(-v, 5, TRUE, TRUE) )
+    ( x1 <- runit_qt_2(-v, 5, TRUE, TRUE) )
     ( x2 <- qt(-v, df=5, lower=TRUE, log=TRUE) )
     expect_equal(x1, x2)
 
@@ -360,7 +360,7 @@ test_that( "(dpq)binom is correct", {
                   )
 
 	v <- 1:10
-	expect_equal(runit_dbinom(v) ,
+	expect_equal(runit_dbinom_2(v) ,
                 list(
                     false = dbinom(v, 10, .5),
                     true = dbinom(v, 10, .5, TRUE )
@@ -370,7 +370,7 @@ test_that( "(dpq)binom is correct", {
     n <- 20
     p <- 0.5
     vv <- 0:n
-    expect_equal(runit_pbinom(vv, n, p),
+    expect_equal(runit_pbinom_2(vv, n, p),
                 list(lowerNoLog = pbinom(vv, n, p),
                      lowerLog   = pbinom(vv, n, p, log=TRUE),
                      upperNoLog = pbinom(vv, n, p, lower=FALSE),
@@ -409,7 +409,7 @@ test_that( "(dpq)cauchy works", {
     location <- 0.5
     scale <- 1.5
     vv <- 1:5
-    expect_equal(runit_pcauchy(vv, location, scale),
+    expect_equal(runit_pcauchy_2(vv, location, scale),
                 list(lowerNoLog = pcauchy(vv, location, scale),
                      lowerLog   = pcauchy(vv, location, scale, log=TRUE),
                      upperNoLog = pcauchy(vv, location, scale, lower=FALSE),
@@ -515,12 +515,12 @@ test_that( "(dpq)pois works", {
                   )
 
 	v <- 0:5
-	expect_equal(runit_dpois(v) ,
+	expect_equal(runit_dpois_2(v) ,
                 list( false = dpois(v, .5),
                       true = dpois(v, .5, TRUE )
                 ))
     vv <- 0:20
-    expect_equal(runit_ppois(vv),
+    expect_equal(runit_ppois_2(vv),
                 list(lowerNoLog = ppois(vv, 0.5),
                      lowerLog   = ppois(vv, 0.5,              log=TRUE),
                      upperNoLog = ppois(vv, 0.5, lower=FALSE),
@@ -618,7 +618,7 @@ test_that( "(dpq)nf works", {
                   )
 
     v <- (1:9)/10
-    expect_equal(runit_pnf(v),
+    expect_equal(runit_pnf_2(v),
                 list(lowerNoLog = pf(v, 6, 8, ncp=2.5, lower=TRUE, log=FALSE),
                      lowerLog   = pf(v, 6, 8, ncp=2.5, log=TRUE ),
                      upperNoLog = pf(v, 6, 8, ncp=2.5, lower=FALSE),
