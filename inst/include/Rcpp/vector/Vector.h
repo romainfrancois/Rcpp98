@@ -368,12 +368,6 @@ public:
     template <typename EXPR_VEC>
     Vector& operator+=( const VectorBase<RTYPE,false,EXPR_VEC>& rhs ) ;
     
-    /** 
-     *  Does this vector have an element with the target name 
-     */
-    bool containsElementNamed( const char* target ) const ;
-     
-
 protected:
     inline int* dims() const {
         if( !::Rf_isMatrix(Storage::get__()) ) throw not_a_matrix() ;

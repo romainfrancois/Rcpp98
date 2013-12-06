@@ -621,4 +621,15 @@ List vector_vector_logical( NumericVector xx, NumericVector yy){
 			LogicalVector y5 = xx == yy;
 			LogicalVector y6 = xx != yy;
 			return List::create(y1, y2, y3, y4, y5, y6);
-}     
+}   
+
+// [[Rcpp::export]]
+List complex_binary_sugar(ComplexVector xx, ComplexVector yy){
+    return List::create(
+    	_["+"] = xx + yy,
+    	_["-"] = xx - yy,
+    	_["*"] = xx * yy,
+    	_["/"] = xx / yy
+    ) ;
+}
+

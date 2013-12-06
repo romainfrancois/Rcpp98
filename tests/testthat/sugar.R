@@ -240,6 +240,18 @@ test_that( "unary and binary arithmetic operations work", {
   expect_equal(vector_vector_ops(x,y), list(x + y, y - x, x * y, y / x))
   expect_equal(vector_vector_logical(x,y), list(x < y, x > y, x <= y, x >= y, x == y, x != y))
   
+  x <- (1+1i) * 1:10
+  y <- (2-3i) * 1:10
+  
+  expect_equal(
+      complex_binary_sugar(x, y),
+      list(
+          "+" = x + y,
+          "-" = x - y,
+          "*" = x * y,
+          "/" = x / y
+          )) 
+  
 })
 
 test_that( "pmin and pmax work", {
@@ -464,7 +476,7 @@ test_that( "matching functions work", {
     expect_true( all( runit_table(x) == table(x) ) )
     expect_true( all( names(runit_table(x)) == names(table(x)) ) )
     expect_equal( runit_duplicated(x), duplicated(x) )
-})
+})   
 
 test_that( "set functions work", {
     expect_equal( 

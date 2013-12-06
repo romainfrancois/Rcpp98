@@ -6,14 +6,14 @@ inline double square( double x){ return x*x; }
 // [[Rcpp::export]]
 RawVector raw_(){
     RawVector x(10) ;
-	for( int i=0; i<10; i++) x[i] = (Rbyte)i ;
-	return x ;
+    for( int i=0; i<10; i++) x[i] = (Rbyte)i ;
+    return x ;
 }
 
 // [[Rcpp::export]]
 RawVector raw_REALSXP( RawVector x ){
     for( int i=0; i<x.size(); i++) {
-    	x[i] = x[i]*2 ;
+       x[i] = x[i]*2 ;
     }
     return x ;
 }
@@ -65,7 +65,7 @@ ComplexVector complex_(){
     for( int i=0; i<10; i++) {
     	rc.r = rc.i = i + 0.0 ;
     	x[i] = rc ;
-    }
+    }       
     return x ;
 }
 
@@ -152,7 +152,7 @@ IntegerVector integer_names_set(){
 	names[0] = "foo" ;
 	names[1] = "bar" ;
 	y.names() = names ;
-	return y ;
+	return y ;    
 }
 
 // [[Rcpp::export]]
@@ -163,13 +163,6 @@ CharacterVector integer_names_get( IntegerVector y ){
 // [[Rcpp::export]]
 int integer_names_indexing( IntegerVector y ){
     return y["foo"] ;
-}
-
-// [[Rcpp::export]]
-IntegerVector integer_comma(){
-    IntegerVector x(4) ;
-	x = 0, 1, 2, 3 ;
-	return x ;
 }
 
 // [[Rcpp::export]]
@@ -579,22 +572,6 @@ std::string character_names_indexing( CharacterVector y ){
 }
 
 // [[Rcpp::export]]
-CharacterVector character_comma(){
-    CharacterVector x(3) ;
-    x = "foo", "bar", "bling" ;
-    return x ;
-}
-
-// [[Rcpp::export]]
-List character_listOf( List ll ){
-    CharacterVector cv1 = ll["foo"];
-    CharacterVector cv2 = ll["bar"];
-    std::string rv1 = std::string(cv1[0]) + cv1[1] + cv1[2];
-    std::string rv2 = std::string(cv2[0]) + cv2[1] + cv2[2];
-    return List::create(_["foo"] = rv1, _["bar"] = rv2); 
-}
-
-// [[Rcpp::export]]
 int character_find_(CharacterVector y){
 	CharacterVector::iterator it = std::find( y.begin(), y.end(), "foo" ) ;
 	return std::distance( y.begin(), it );
@@ -609,16 +586,6 @@ List character_create_(){
 		_["bar"] = "foo"
 		) ;
 	return output ;
-}
-
-// [[Rcpp::export]]
-List complex_binary_sugar(ComplexVector xx, ComplexVector yy){
-    return List::create(
-    	_["+"] = xx + yy,
-    	_["-"] = xx - yy,
-    	_["*"] = xx * yy,
-    	_["/"] = xx / yy
-    ) ;
 }
 
 // [[Rcpp::export]]
@@ -637,11 +604,6 @@ CharacterVector factors( CharacterVector s){
 IntegerVector IntegerVector_int_init(){
     IntegerVector x(2,4) ;
 	return x ;
-}
-
-// [[Rcpp::export]]
-bool containsElementNamed( List l, CharacterVector n){
-    return l.containsElementNamed(n[0]);
 }
 
 // [[Rcpp::export]]
