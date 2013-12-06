@@ -18,7 +18,6 @@ Rcpp.plugin.maker(
   package = "Rcpp98"
 )
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{include.before}{Code to be included before the \samp{Rcpp.h} file}
   \item{include.after}{Code to be included after the \samp{Rcpp.h} file }

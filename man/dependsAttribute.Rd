@@ -19,7 +19,7 @@ The \code{Rcpp::depends} attribute is added to a C++ source file to indicate tha
 \details{
     The \code{Rcpp::depends} attribute is used by the implementation of the \code{\link{sourceCpp}} function to correctly setup the build environment for \code{R CMD SHLIB}. 
     
-    The include directories of the specified packages are added to the \code{CLINK_CPPFLAGS} environment variable. In addition, if the referenced package provides an \link[inline:plugins]{inline plugin} it is called to determine additional environment variables required to successfully build.
+    The include directories of the specified packages are added to the \code{CLINK_CPPFLAGS} environment variable. In addition, if the referenced package provides an inline plugin it is called to determine additional environment variables required to successfully build.
 
 }
 

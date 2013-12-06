@@ -5,7 +5,7 @@
 
 \description{
 The \code{Rcpp::plugins} attribute is added to a C++ source file to specify the
-\link[inline:plugins]{inline plugins} that should be used in the compilation.
+inline plugins that should be used in the compilation.
 \preformatted{
 // [[Rcpp::plugins(plugin1, plugin2)]]
 }

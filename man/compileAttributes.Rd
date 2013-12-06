@@ -9,7 +9,6 @@ Scan the source files within a package for attributes and generate code as requi
 \usage{
 compileAttributes(pkgdir = ".", verbose = getOption("verbose"))
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{pkgdir}{
     Directory containing the package to compile attributes for (defaults to the current working directory).
@@ -23,7 +22,7 @@ compileAttributes(pkgdir = ".", verbose = getOption("verbose"))
     
     For C++ functions adorned with the \code{Rcpp::export} attribute, the C++ and R source code required to bind to the function from R is generated and added (respectively) to \code{src/RcppExports.cpp} or \code{R/RcppExports.R}.
     
-    In order to access the declarations for custom \code{Rcpp::as} and \code{Rcpp::wrap} handlers the \code{compileAttributes} function will also call any \link[inline:plugins]{inline plugins} available for packages listed in the \code{LinkingTo} field of the \code{DESCRIPTION} file.
+    In order to access the declarations for custom \code{Rcpp::as} and \code{Rcpp::wrap} handlers the \code{compileAttributes} function will also call any inline plugins available for packages listed in the \code{LinkingTo} field of the \code{DESCRIPTION} file.
 }
 \value{
     Returns (invisibly) a character vector with the paths to any files that were updated as a result of the call.

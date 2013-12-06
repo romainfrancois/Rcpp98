@@ -4,7 +4,7 @@
 Register an inline plugin
 }
 \description{
-Register an \link[inline:plugins]{inline plugin} for use with 
+Register an inline plugin for use with 
 \code{\link{sourceCpp}} or \code{\link{cppFunction}}. Inline plugins are functions
 that return a list with additional includes, environment variables, and
 other compilation context. 
