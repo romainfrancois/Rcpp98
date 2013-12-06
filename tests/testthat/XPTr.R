@@ -1,11 +1,11 @@
-
-.setUp <- Rcpp98:::unit_test_setup( "XPtr.cpp" )
+context( "External pointers" )
+sourceCpp( "cpp/XPtr.cpp" )
     
-test.XPtr <- function(){
+test_that( "XPtr works", {
     xp <- xptr_1()
-    checkEquals(typeof( xp ), "externalptr", msg = "checking external pointer creation" )
+    expect_equal(typeof( xp ), "externalptr")
     
     front <- xptr_2(xp)
-    checkEquals( front, 1L, msg = "check usage of external pointer" )
-}
+    expect_equal( front, 1L)
+})
 
