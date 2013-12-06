@@ -1,2 +1,2 @@
 library(testthat)
-test_check(Rcpp98)
+test_check('Rcpp98')

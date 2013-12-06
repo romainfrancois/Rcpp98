@@ -24,11 +24,11 @@ test_that( "R classes can extend C++ classes", {
     
     data[[4]] <- data[[4]] +1
     
-    checkEquals( v$as.vector(), data )
+    expect_equal( v$as.vector(), data )
     
     ## a few function calls
-    checkEquals( bar(2), 4)
-    checkEquals( foo(2,3), 6)
+    expect_equal( bar(2), 4)
+    expect_equal( foo(2,3), 6)
 
 })
 

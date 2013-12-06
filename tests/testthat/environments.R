@@ -131,9 +131,9 @@ test_that( "Environment can remove variables from itself", {
 	e$b <- 2
 	expect_true( runit_remove( e, "a" ))
 	expect_equal( ls(envir=e), "b")
-	checkException( runit_remove(e, "xx"))
+	expect_error( runit_remove(e, "xx"))
 	lockBinding( "b", e )
-	checkException( runit_remove(e, "b"))
+	expect_error( runit_remove(e, "b"))
 	expect_equal( ls(envir=e), "b")
 })
 
