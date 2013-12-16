@@ -28,9 +28,13 @@ namespace Rcpp{
     public:
         RCPP_GENERATE_CTOR_ASSIGN(Promise_Impl) 
     
-        Promise_Impl( SEXP x){
+        Promise_Impl(SEXP x){
             if( TYPEOF(x) != PROMSXP)
                 throw not_compatible("not a promise") ;
+            
+            while(TYPEOF(PRCODE(x)) == PROMSXP){
+                x = PRCODE(x) ;
+            }
             Storage::set__(x) ;
         }
         
