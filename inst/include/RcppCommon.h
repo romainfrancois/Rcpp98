@@ -145,7 +145,6 @@ namespace Rcpp{
 
 #include <Rcpp/internal/wrap.h>
 
-#include <Rcpp/internal/ListInitialization.h>
 #include <Rcpp/internal/Proxy_Iterator.h>
 #include <Rcpp/internal/SEXP_Iterator.h>
 #include <Rcpp/internal/converter.h>

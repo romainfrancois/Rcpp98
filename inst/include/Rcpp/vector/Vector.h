@@ -136,11 +136,6 @@ public:
         return traits::is_na<RTYPE>(x); 
     }
     
-    internal::ListInitialization<iterator,init_type> operator=( init_type x){
-        iterator start = begin() ; *start = x; 
-        return internal::ListInitialization<iterator,init_type>( start + 1 ) ; ;
-    }
-    
     /**
      * the length of the vector, uses Rf_length
      */
