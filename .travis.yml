@@ -10,11 +10,6 @@ before_install:
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
   - ./travis-tool.sh github_package testthat
-  - cd ..
-  - git clone https://github.com/romainfrancois/Rcpp-test.git
-  - sed -e "s/Rcpp/Rcpp98/" Rcpp-test/tests/test-all.R > test-all.R
-  - mv test-all.R Rcpp-test/tests/test-all.R
-  - cd Rcpp98
     
 script: 
   - ./travis-tool.sh run_tests
