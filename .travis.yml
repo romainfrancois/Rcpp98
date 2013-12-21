@@ -12,13 +12,18 @@ before_install:
   - ./travis-tool.sh github_package testthat
   - cd ..
   - git clone https://github.com/romainfrancois/Rcpp-test.git
-  - mkdir Rcpp98/tests
-  - cp -frv Rcpp-test/tests/* Rcpp98/tests/
-  - sed -e "s/Rcpp/Rcpp98/" Rcpp-test/tests/test-all.R > Rcpp98/tests/test-all.R
+  - sed -e "s/Rcpp/Rcpp98/" Rcpp-test/tests/test-all.R > test-all.R
+  - mv test-all.R Rcpp-test/tests/test-all.R
   - cd Rcpp98
     
 script: 
   - ./travis-tool.sh run_tests
+  - FILE=$(ls -1t Rcpp98_*.tar.gz | head -n 1)
+  - R CMD INSTALL "${FILE}"
+  - git clone https://github.com/romainfrancois/Rcpp-test.git
+  - cd Rcpp-test
+  - Rscript -e "library(methods); library(testthat); library(Rcpp98); test_dir('.')"
+  - cd ..
   
 after_script:
   - ./travis-tool.sh dump_logs
