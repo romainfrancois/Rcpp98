@@ -12,8 +12,8 @@ before_install:
   - ./travis-tool.sh github_package testthat
   - cd ..
   - git clone https://github.com/romainfrancois/Rcpp-test.git
-  - cp -frv Rcpp-tests/tests Rcpp98/
-  - sed -e "s/Rcpp/Rcpp98/" Rcpp-tests/tests/test-all.R > Rcpp98/tests/test-all.R
+  - cp -frv Rcpp-test/tests Rcpp98/
+  - sed -e "s/Rcpp/Rcpp98/" Rcpp-test/tests/test-all.R > Rcpp98/tests/test-all.R
   - cd Rcpp98
     
 script: 
