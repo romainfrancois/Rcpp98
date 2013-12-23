@@ -2,23 +2,27 @@ language: c
 
 env:
   global:
-    - R_BUILD_ARGS="--no-build-vignettes --no-manual"
-    - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+    - R_BUILD_ARGS="--no-manual"
+    - R_CHECK_ARGS="--no-manual --as-cran"
 
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
-
-install:
   - ./travis-tool.sh github_package testthat
-  
+    
 script: 
   - ./travis-tool.sh run_tests
-
-after_script:
+  - FILE=$(ls -1t Rcpp98_*.tar.gz | head -n 1)
+  - R CMD INSTALL "${FILE}"
+  - git clone https://github.com/romainfrancois/Rcpp-test.git
+  - cd Rcpp-test
+  - Rscript -e "library(methods); library(testthat); library(Rcpp98); test_dir('.')"
+  - cd ..
+  
+after_failure:
   - ./travis-tool.sh dump_logs
-
+  
 notifications:
   email:
     on_success: change
