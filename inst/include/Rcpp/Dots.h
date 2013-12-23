@@ -27,7 +27,7 @@ namespace Rcpp{
             return promises[i] ;
         }
         
-        inline Environment& env(int i){
+        inline Environment env(int i){
             return promises[i].environment() ;    
         }
         
