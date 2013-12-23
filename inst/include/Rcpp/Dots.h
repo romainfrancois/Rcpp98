@@ -23,11 +23,11 @@ namespace Rcpp{
             return promises.size() ;    
         }
         
-        inline Promise& prom(int i) {
+        inline Promise& promise(int i) {
             return promises[i] ;
         }
         
-        inline Environment env(int i){
+        inline Environment environment(int i){
             return promises[i].environment() ;    
         }
         
