@@ -15,6 +15,10 @@ namespace Rcpp{
             SEXP dots = env.find("...") ;
             while(dots != R_NilValue){
                 promises.push_back(CAR(dots)) ;
+                SEXP tag = TAG(dots) ;
+                if(tag==R_NilValue) 
+                    stop("unnamed contribution to ... in NamedDots") ; 
+                symbols.push_back(tag) ;
                 dots = CDR(dots);
             }
         }
@@ -31,9 +35,14 @@ namespace Rcpp{
             return promises[i].environment() ;    
         }
         
+        inline Symbol& symbol(int i){
+            return symbols[i] ;
+        }
+        
     private:
         
-        std::vector<Promise> promises ;
+        std::vector<Promise> promises ;   
+        std::vector<Symbol> symbols ;
     } ;
     
     typedef NamedDots_Impl<NoProtectStorage> Dots ; 
