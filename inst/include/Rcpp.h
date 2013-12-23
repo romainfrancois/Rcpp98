@@ -39,6 +39,7 @@
 #include <Rcpp/Fast.h>
 #include <Rcpp/Extractor.h>
 #include <Rcpp/Promise.h>
+#include <Rcpp/Dots.h>
 
 #include <Rcpp/XPtr.h>
 #include <Rcpp/Symbol.h>
