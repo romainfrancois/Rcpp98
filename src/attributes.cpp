@@ -149,6 +149,14 @@ namespace attributes {
         const Type& type() const { return type_; }
         const std::string& defaultValue() const { return defaultValue_; }
         
+        inline bool is_Dots() const {
+            return type_.name() == "Dots" || type_.name() == "Rcpp::Dots" ;    
+        }
+        inline bool is_NamedDots() const {
+            return type_.name() == "NamedDots" || type_.name() == "Rcpp::NamedDots" ;    
+        }
+        
+        
     private:
         std::string name_;
         Type type_;
