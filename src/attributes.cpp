@@ -1883,8 +1883,14 @@ namespace attributes {
                 
                 // add arguments
                 const std::vector<Argument>& arguments = function.arguments();
-                for (size_t i = 0; i<arguments.size(); i++)
-                    ostr() << ", " << arguments[i].name();
+                for (size_t i = 0; i<arguments.size(); i++){
+                    const Argument& argument = arguments[i] ;
+                    if( argument.is_Dots() || argument.is_NamedDots() ){
+                        ostr() << ", environment() " ;    
+                    } else {
+                        ostr() << ", " << argument.name();
+                    }
+                }
                 ostr() << ")";
                 if (function.type().isVoid())
                     ostr() << ")";
@@ -2103,20 +2109,23 @@ namespace attributes {
         const std::vector<Argument>& arguments = function.arguments();
         for (size_t i = 0; i<arguments.size(); i++) {
             const Argument& argument = arguments[i];
-            argsOstr << argument.name();
-            if (!argument.defaultValue().empty()) {
-                std::string rArg = cppArgToRArg(argument.type().name(), 
-                                                argument.defaultValue());
-                if (!rArg.empty()) {
-                    argsOstr << " = " << rArg;
-                } else {
-                    showWarning("Unable to parse C++ default value '" +
-                                argument.defaultValue() + "' for argument "+
-                                argument.name() + " of function " +
-                                function.name());
+            if(argument.is_Dots() || argument.is_NamedDots()){
+                argsOstr << "..." ;    
+            } else {
+                argsOstr << argument.name();
+                if (!argument.defaultValue().empty()) {
+                    std::string rArg = cppArgToRArg(argument.type().name(), 
+                                                    argument.defaultValue());
+                    if (!rArg.empty()) {
+                        argsOstr << " = " << rArg;
+                    } else {
+                        showWarning("Unable to parse C++ default value '" +
+                                    argument.defaultValue() + "' for argument "+
+                                    argument.name() + " of function " +
+                                    function.name());
+                    }
                 }
-            }
-               
+            }   
             if (i != (arguments.size()-1))
                 argsOstr << ", ";
         }
@@ -2175,10 +2184,15 @@ namespace attributes {
                 ostr << "        Rcpp::RNGScope __rngScope;" << std::endl;
             for (size_t i = 0; i<arguments.size(); i++) {
                 const Argument& argument = arguments[i];
-                
-                ostr << "        Rcpp::traits::input_parameter< " 
-                     << argument.type().full_name() << " >::type " << argument.name() 
-                     << "(" << argument.name() << "SEXP );" << std::endl;
+                if( argument.is_Dots() ){
+                    ostr << "        Rcpp::Dots dots(" << argument.name() << "SEXP ) ; " << std::endl ;
+                } else if( argument.is_NamedDots() ){
+                    ostr << "        Rcpp::NamedDots dots(" << argument.name() << "SEXP ) ; " << std::endl ;
+                } else {
+                    ostr << "        Rcpp::traits::input_parameter< " 
+                         << argument.type().full_name() << " >::type " << argument.name() 
+                         << "(" << argument.name() << "SEXP );" << std::endl;
+                }
             }
             
             ostr << "        ";

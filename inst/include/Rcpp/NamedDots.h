@@ -40,12 +40,11 @@ namespace Rcpp{
         }
         
     private:
-        
         std::vector<Promise> promises ;   
         std::vector<Symbol> symbols ;
     } ;
     
-    typedef NamedDots_Impl<NoProtectStorage> Dots ; 
+    typedef NamedDots_Impl<NoProtectStorage> NamedDots ; 
     
 }
 
