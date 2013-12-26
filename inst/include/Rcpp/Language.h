@@ -195,7 +195,7 @@ namespace Rcpp{
         
     private:
         Language call ;
-        Language::Proxy proxy ;
+        typename Language::Proxy proxy ;
     } ;
 
     template <typename T1, typename T2, typename OUT = SEXP, template <class> class StoragePolicy = PreserveStorage>
@@ -216,8 +216,8 @@ namespace Rcpp{
         
     private:
         Language call ;
-        Language::Proxy proxy1 ;
-        Language::Proxy proxy2 ;
+        typename Language::Proxy proxy1 ;
+        typename Language::Proxy proxy2 ;
     } ;
 
 } // namespace Rcpp
