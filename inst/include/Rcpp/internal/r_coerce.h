@@ -273,7 +273,7 @@ inline SEXP r_coerce<REALSXP,STRSXP>(double from){
   else if (from == R_PosInf) return Rf_mkChar("Inf");
   else if (from == R_NegInf) return Rf_mkChar("-Inf");
   else if (R_IsNA(from)) return NA_STRING;
-  else return Rf_mkChar( coerce_to_string<REALSXP>(from) )
+  else return Rf_mkChar( coerce_to_string<REALSXP>(from) );
 }
 template <> 
 inline SEXP r_coerce<INTSXP ,STRSXP>(int from){ 
