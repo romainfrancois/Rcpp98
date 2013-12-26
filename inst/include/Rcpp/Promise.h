@@ -61,15 +61,15 @@ namespace Rcpp{
         /**
          * The promise expression: PRCODE
          */
-        ExpressionVector expression() const {
-            return ExpressionVector(PRCODE( Storage::get__() )) ;   
+        SEXP expression() const {
+            return PRCODE( Storage::get__() ) ;   
         }
 
         /**
          * The promise environment : PRENV
          */
-        Environment environment() const {
-            return Environment( PRENV(Storage::get__() ) ) ;   
+        SEXP environment() const {
+            return PRENV(Storage::get__() ) ;   
         }
         
         inline void update(SEXP data){}

@@ -39,9 +39,11 @@
 #include <Rcpp/Fast.h>
 #include <Rcpp/Extractor.h>
 #include <Rcpp/Promise.h>
+#include <Rcpp/Symbol.h>
+#include <Rcpp/Dots.h>
+#include <Rcpp/NamedDots.h>
 
 #include <Rcpp/XPtr.h>
-#include <Rcpp/Symbol.h>
 #include <Rcpp/DottedPairImpl.h>
 #include <Rcpp/Function.h>
 #include <Rcpp/Language.h>
