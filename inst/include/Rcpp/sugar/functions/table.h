@@ -27,26 +27,25 @@
 namespace Rcpp{
 namespace sugar{
 
-template <typename HASH, typename STORAGE>
+template <typename MAP, typename STORAGE>
 class CountInserter {
 public:
-    CountInserter( HASH& hash_ ) : hash(hash_) {}
+    CountInserter( MAP& map_ ) : map(map_) {}
     
     inline void operator()( STORAGE value ){
-        hash[value]++ ;
+        map[value]++ ;
     }
     
 private:
-    HASH& hash ;
+    MAP& map ;
 } ; 
 
-template <typename HASH, int RTYPE>
+template <typename MAP, int RTYPE>
 class Grabber{
 public:
     Grabber( IntegerVector& res_, CharacterVector& names_ ) : res(res_), names(names_), index(0){}
     
-    template <typename T>
-    inline void operator()( T pair){
+    inline void operator()( typename MAP::value_type pair){
         res[index] = pair.second ;
         names[index++] = internal::r_coerce<RTYPE,STRSXP>(pair.first) ;
     }
@@ -62,23 +61,23 @@ class Table {
 public:
     typedef typename Rcpp::traits::storage_type<RTYPE>::type STORAGE ;
     
-    Table( const TABLE_T& table ): hash() {
-        std::for_each( table.begin(), table.end(), Inserter(hash) ) ;
+    Table( const TABLE_T& table ): map() {
+        std::for_each( table.begin(), table.end(), Inserter(map) ) ;
     }
     
     inline operator IntegerVector() const { 
-        int n = hash.size() ;
+        int n = map.size() ;
         IntegerVector result = no_init(n) ;
         CharacterVector names = no_init(n) ;
-        std::for_each( hash.begin(), hash.end(), Grabber<HASH, RTYPE>(result, names) ) ;
+        std::for_each( map.begin(), map.end(), Grabber<MAP, RTYPE>(result, names) ) ;
         result.names() = names ;
         return result ;
     }
     
 private:
-    typedef std::map<STORAGE, int, MapCompare<STORAGE> >HASH ;
-    typedef CountInserter<HASH,STORAGE> Inserter ;
-    HASH hash ;
+    typedef std::map<STORAGE, int, MapCompare<STORAGE> > MAP ;
+    typedef CountInserter<MAP,STORAGE> Inserter ;
+    MAP map ;
 };
     
 } // sugar
