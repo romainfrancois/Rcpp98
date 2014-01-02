@@ -1,23 +1,5 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
-//
-// Vector.h: Rcpp R/C++ interface class library -- vectors
-//
 // Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
-//
-// This file is part of Rcpp98.
-//
-// Rcpp98 is free software: you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 2 of the License, or
-// (at your option) any later version.
-//                                                              
-// Rcpp98 is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Rcpp98.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (C) 2014 Romain Francois
 
 #ifndef Rcpp__vector__Vector_h
 #define Rcpp__vector__Vector_h
@@ -175,17 +157,15 @@ public:
     
     R_len_t offset(const std::string& name) const {
         SEXP names = RCPP_GET_NAMES( Storage::get__() ) ;
-        if( Rf_isNull(names) ) throw index_out_of_bounds(); 
-        R_len_t n=size() ;
-        for( R_len_t i=0; i<n; ++i){
-            if( ! name.compare( CHAR(STRING_ELT(names, i)) ) ){
-                return i ;
-            }
-        }
-        throw index_out_of_bounds() ;
-        return -1 ; /* -Wall */
+        if( names == R_NilValue ) throw index_out_of_bounds(); 
+        int n = size() ;
+        
+        SEXP* data = internal::r_vector_start<STRSXP>(names) ;
+        int index = std::find( data, data+n, Rf_mkChar(name.c_str()) ) - data ; 
+        if( index == n ) throw index_out_of_bounds() ;
+        return index ;
     }
-
+    
     template <typename U>
     void fill( const U& u){
         fill__dispatch( typename traits::is_trivial<RTYPE>::type(), u ) ;
