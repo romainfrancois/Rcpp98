@@ -75,7 +75,12 @@ public:
         std::generate( begin(), end(), gen );
     }
     
-    Vector( const int& size )  ;
+    template <typename Proxy>                     
+    Vector( const GenericProxy<Proxy>& proxy ){
+        Storage::set__( proxy.get() ) ;           
+    }
+
+    Vector( const int& size )  ;             
     Vector( const Dimension& dims)  ;
     
     template <typename U> Vector( const Dimension& dims, const U& u) ;
