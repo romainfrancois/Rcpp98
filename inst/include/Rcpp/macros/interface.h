@@ -1,20 +1,5 @@
-// Copyright (C) 2013 Romain Francois
-//
-// This file is part of Rcpp98.
-//
-// Rcpp98 is free software: you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 2 of the License, or
-// (at your option) any later version.
-//
-// Rcpp98 is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Rcpp98.  If not, see <http://www.gnu.org/licenses/>.
-
+// Copyright (C) 2013 - 2014 Romain Francois
+  
 #ifndef Rcpp_macros_interface_h
 #define Rcpp_macros_interface_h
 
@@ -30,7 +15,11 @@ __CLASS__( const __CLASS__& other ){                                           \
 __CLASS__& operator=(const __CLASS__& rhs) {                                   \
     return Storage::copy__(rhs) ;                                              \
 }                                                                              \
-
+template <typename Proxy>                                                      \
+__CLASS__( const GenericProxy<Proxy>& proxy ){                                 \
+    Storage::set__( proxy.get() ) ;                                            \
+}
+    
 #define RCPP_API_CLASS(__CLASS__)                                              \
 template < template <class> class StoragePolicy > class __CLASS__ :            \
     public StoragePolicy<__CLASS__<StoragePolicy> >,                           \
