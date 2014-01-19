@@ -1,25 +1,3 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
-//
-// String.h: Rcpp R/C++ interface class library -- single string
-//
-// Copyright (C) 2012 - 2013 Dirk Eddelbuettel and Romain Francois
-// Copyright (C) 2012 - 2013 Rice University
-//
-// This file is part of Rcpp98.
-//
-// Rcpp98 is free software: you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 2 of the License, or
-// (at your option) any later version.
-//
-// Rcpp98 is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Rcpp98.  If not, see <http://www.gnu.org/licenses/>.
-
 #ifndef Rcpp__String_h
 #define Rcpp__String_h
 
@@ -102,7 +80,7 @@ namespace Rcpp {
         String( bool x ) : data( internal::r_coerce<LGLSXP,STRSXP>(x) ), valid( true ) , buffer_ready(false){}
         String( Rcomplex x ) : data( internal::r_coerce<CPLXSXP,STRSXP>(x) ), valid( true ), buffer_ready(false){}
         String( Rbyte x ) : data( internal::r_coerce<RAWSXP,STRSXP>(x) ), valid(true), buffer_ready(false){}
-        
+        String( Na_Proxy ) ;
         
         inline String& operator=( int x     ){ data = internal::r_coerce<INTSXP ,STRSXP>( x ) ; valid = true ; buffer_ready = false ; return *this ; }
         inline String& operator=( double x  ){ data = internal::r_coerce<REALSXP,STRSXP>( x ) ; valid = true ; buffer_ready = false ; return *this ; }
@@ -114,6 +92,7 @@ namespace Rcpp {
         inline String& operator=( const String& other ){ data = other.get_sexp() ; valid = true ; buffer_ready = false ; return *this ; }       
         inline String& operator=( const std::string& s){  buffer = s ; valid = false ; buffer_ready = true ; return *this ; }                     
         inline String& operator=( const char* s){ buffer = s ; valid = false ; buffer_ready = true ; return *this ; }                             
+        inline String& operator=( Na_Proxy ) ;
         
     private:
         template <typename T>
