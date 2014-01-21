@@ -1225,7 +1225,7 @@ namespace attributes {
             prevChar = ch;
         }
         
-        if (!currentArg.empty())
+        if (!currentArg.empty() && currentArg != "void" )
             args.push_back(currentArg);
         
         return args;

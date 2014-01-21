@@ -160,10 +160,12 @@ namespace Rcpp{
 
     typedef Language_Impl<PreserveStorage> Language ;
     
-    template <typename OUT=SEXP>
+    template <typename OUT=SEXP, template <class> class StoragePolicy = PreserveStorage >
     class fixed_call {
     public:
         typedef OUT result_type ;
+        typedef Language_Impl<StoragePolicy> Language ; 
+        typedef Function_Impl<StoragePolicy> Function ; 
         
         fixed_call( Language call_ ) : call(call_){}
         fixed_call( Function fun ) : call(fun){}
@@ -176,9 +178,12 @@ namespace Rcpp{
         Language call ;
     } ;
 
-    template <typename T, typename OUT = SEXP>
+    template <typename T, typename OUT = SEXP, template <class> class StoragePolicy = PreserveStorage >
     class unary_call : public std::unary_function<T,OUT> {
     public:
+        typedef Language_Impl<StoragePolicy> Language ; 
+        typedef Function_Impl<StoragePolicy> Function ; 
+        
         unary_call( Language call_ ) : call(call_), proxy(call_,1) {}
         unary_call( Language call_, int index ) : call(call_), proxy(call_,index){}
         unary_call( Function fun ) : call( fun, R_NilValue), proxy(call,1) {}
@@ -190,12 +195,15 @@ namespace Rcpp{
         
     private:
         Language call ;
-        Language::Proxy proxy ;
+        typename Language::Proxy proxy ;
     } ;
 
-    template <typename T1, typename T2, typename OUT = SEXP>
+    template <typename T1, typename T2, typename OUT = SEXP, template <class> class StoragePolicy = PreserveStorage>
     class binary_call : public std::binary_function<T1,T2,OUT> {
     public:
+        typedef Language_Impl<StoragePolicy> Language ; 
+        typedef Function_Impl<StoragePolicy> Function ; 
+        
         binary_call( Language call_ ) : call(call_), proxy1(call_,1), proxy2(call_,2) {}
         binary_call( Language call_, int index1, int index2 ) : call(call_), proxy1(call_,index1), proxy2(call_,index2){}
         binary_call( Function fun) : call(fun, R_NilValue, R_NilValue), proxy1(call,1), proxy2(call,2){}
@@ -208,8 +216,8 @@ namespace Rcpp{
         
     private:
         Language call ;
-        Language::Proxy proxy1 ;
-        Language::Proxy proxy2 ;
+        typename Language::Proxy proxy1 ;
+        typename Language::Proxy proxy2 ;
     } ;
 
 } // namespace Rcpp

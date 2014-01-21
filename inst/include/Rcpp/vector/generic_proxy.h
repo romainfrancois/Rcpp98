@@ -1,23 +1,3 @@
-// generic_proxy.h: Rcpp R/C++ interface class library -- 
-//
-// Copyright (C) 2010 - 2013 Dirk Eddelbuettel and Romain Francois
-// Copyright (C) 2013 Rice University
-//
-// This file is part of Rcpp98.
-//
-// Rcpp98 is free software: you can redistribute it and/or modify it
-// under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 2 of the License, or
-// (at your option) any later version.
-//
-// Rcpp98 is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Rcpp98.  If not, see <http://www.gnu.org/licenses/>.
-
 #ifndef Rcpp__vector__generic_proxy_h
 #define Rcpp__vector__generic_proxy_h
 
@@ -25,7 +5,7 @@ namespace Rcpp{
 namespace internal{
 	
 	template <int RTYPE> 
-	class generic_proxy{
+	class generic_proxy : public GenericProxy< generic_proxy<RTYPE> > {
 		public:
 			typedef typename ::Rcpp::Vector<RTYPE> VECTOR ;
 			

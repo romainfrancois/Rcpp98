@@ -24,7 +24,7 @@ template <typename CLASS>
 class DottedPairProxyPolicy {
 public:
     
-    	class DottedPairProxy : public GenericProxy<DottedPairProxy> {
+  class DottedPairProxy : public GenericProxy<DottedPairProxy> {
 	public:
 		DottedPairProxy( CLASS& v, int index_ ): node(R_NilValue){
             if( index_ >= v.length() ) throw index_out_of_bounds() ;

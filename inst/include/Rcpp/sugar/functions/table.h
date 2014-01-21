@@ -1,8 +1,8 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; tab-width: 8 -*-
 //
-// table.h: Rcpp R/C++ interface class library -- table match
+// table.h: Rcpp98 R/C++ interface class library -- table match
 //
-// Copyright (C) 2012   Dirk Eddelbuettel and Romain Francois
+// Copyright (C) 2012 - 2013   Dirk Eddelbuettel, Romain Francois, and Kevin Ushey
 //
 // This file is part of Rcpp98.
 //
@@ -21,31 +21,31 @@
 
 #ifndef Rcpp__sugar__table_h
 #define Rcpp__sugar__table_h
+
+#include <Rcpp/sugar/tools/mapcompare.h>
           
 namespace Rcpp{
 namespace sugar{
 
-template <typename HASH, typename STORAGE>
+template <typename MAP, typename STORAGE>
 class CountInserter {
 public:
-    CountInserter( HASH& hash_ ) : hash(hash_), index(0) {}
+    CountInserter( MAP& map_ ) : map(map_) {}
     
     inline void operator()( STORAGE value ){
-        hash[value]++ ;
+        map[value]++ ;
     }
     
 private:
-    HASH& hash ;
-    int index;
+    MAP& map ;
 } ; 
 
-template <typename HASH, int RTYPE>
+template <typename MAP, int RTYPE>
 class Grabber{
 public:
     Grabber( IntegerVector& res_, CharacterVector& names_ ) : res(res_), names(names_), index(0){}
     
-    template <typename T>
-    inline void operator()( T pair){
+    inline void operator()( typename MAP::value_type pair){
         res[index] = pair.second ;
         names[index++] = internal::r_coerce<RTYPE,STRSXP>(pair.first) ;
     }
@@ -61,33 +61,24 @@ class Table {
 public:
     typedef typename Rcpp::traits::storage_type<RTYPE>::type STORAGE ;
     
-    Table( const TABLE_T& table ): hash(), map() {
-        // populate the initial hash
-        std::for_each( table.begin(), table.end(), Inserter(hash) ) ;
-        
-        // populate the map, sorted by keys
-        map.insert( hash.begin(), hash.end() ) ;
+    Table( const TABLE_T& table ): map() {
+        std::for_each( table.begin(), table.end(), Inserter(map) ) ;
     }
     
     inline operator IntegerVector() const { 
-        // fill the result
         int n = map.size() ;
         IntegerVector result = no_init(n) ;
         CharacterVector names = no_init(n) ;
-        std::for_each( map.begin(), map.end(), Grabber<SORTED_MAP,RTYPE>(result, names) ) ;
+        std::for_each( map.begin(), map.end(), Grabber<MAP, RTYPE>(result, names) ) ;
         result.names() = names ;
         return result ;
     }
     
 private:
-    typedef RCPP_UNORDERED_MAP<STORAGE, int> HASH ;
-    typedef CountInserter<HASH,STORAGE> Inserter ;
-    
-    typedef std::map<STORAGE, int, typename Rcpp::traits::comparator_type<RTYPE>::type > SORTED_MAP ;
-    
-    HASH hash ;
-    SORTED_MAP map ;
-}; 
+    typedef std::map<STORAGE, int, MapCompare<STORAGE> > MAP ;
+    typedef CountInserter<MAP,STORAGE> Inserter ;
+    MAP map ;
+};
     
 } // sugar
 
