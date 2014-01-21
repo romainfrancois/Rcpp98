@@ -55,8 +55,6 @@
 #include <Rcpp/Formula.h>
 #include <Rcpp/DataFrame.h>
 
-#include <Rcpp/Na_Proxy.h>
-
 #include <Rcpp/Module.h>
 #include <Rcpp/InternalFunction.h>
 

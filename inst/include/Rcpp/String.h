@@ -21,7 +21,8 @@
 
 
 namespace Rcpp {
-
+    class Na_Proxy ;
+    
     /**
      * A single string, i.e. an element of a character vector. 
      * This represents CHARSXP SEXP 
